@@ -63,7 +63,7 @@
         <v-row>
           <v-col cols="12" sm="6" md="6">
             <v-menu
-              ref="menu"
+              ref="menug"
               v-model="menu"
               :close-on-content-click="false"
               :return-value.sync="date"
@@ -86,7 +86,7 @@
                 <v-btn text color="primary" @click="menu = false">
                   Cancel
                 </v-btn>
-                <v-btn text color="primary" @click="$refs.menu.save(date)">
+                <v-btn text color="primary" @click="$refs.menug.save(date)">
                   OK
                 </v-btn>
               </v-date-picker>
@@ -160,6 +160,41 @@
             </v-menu>
           </v-col>
         </v-row>
+        <p class="form-warning">
+          [ Vehicle must not be kept for more than 3 hours ]
+        </p>
+        <v-row class="form-destination">
+          <v-col cols="12" md="6">
+            <v-text-field
+              v-model="destination"
+              label="Destination"
+              required
+            ></v-text-field>
+          </v-col>
+        </v-row>
+
+        <v-radio-group row>
+          <v-radio label="Personal need" value="radio-1"></v-radio>
+          <v-radio
+            class="form-radio"
+            label="Official need"
+            value="radio-2"
+          ></v-radio>
+        </v-radio-group>
+
+        <v-row>
+          <v-col cols="12" md="6">
+            <v-text-field
+              v-model="reason"
+              label="Purpose of the requisiton"
+              required
+            ></v-text-field>
+          </v-col>
+        </v-row>
+
+        <div class="my-2 mt-6">
+          <v-btn color="teal lighten-1" dark x-large> Submit </v-btn>
+        </div>
       </v-container>
     </v-form>
   </div>
@@ -174,12 +209,15 @@ export default {
     name: "Dr. Ahsan Habib",
     phone: "017xxxxxxxx",
     designation: "Assistant Professor, SWE",
-    users_name: "",
-    users_phone: "",
+    users_name: "Dr. Ahsan Habib",
+    users_phone: "017xxxxxxxx",
     nameRules: [(v) => !!v || "Name is required"],
     date: "",
     start_time: "",
     end_time: "",
+    destination: "",
+    reason: "",
+
     menu: false,
     modal: false,
     modal2: false,
@@ -194,7 +232,6 @@ export default {
   methods: {
     allowedHoursStartTime(v) {
       if (v >= 8 && v <= 20) {
-        console.log(v);
         return v;
       }
     },
@@ -206,7 +243,6 @@ export default {
         num = start_time[0] + start_time[1];
       }
       num = parseInt(num);
-      console.log(num);
       return [num + 1, num + 2, num + 3];
     },
   },
@@ -220,6 +256,14 @@ export default {
   align-items: center;
   justify-content: center;
 }
-.form-calendar {
+.form-warning {
+  margin: 0;
+  font-weight: 500;
+}
+.form-destination {
+  margin-top: 10px;
+}
+.form-radio {
+  margin-left: 155px;
 }
 </style>
