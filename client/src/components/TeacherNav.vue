@@ -17,7 +17,7 @@
       <v-divider></v-divider>
 
       <v-list dense>
-        <v-list-item v-for="item in items" :key="item.title">
+        <v-list-item v-for="item in items" :key="item.title" :to="item.to">
           <v-list-item-icon>
             <v-icon>{{ item.icon }}</v-icon>
           </v-list-item-icon>
@@ -55,8 +55,8 @@ export default {
   data: () => ({
     drawer: false,
     items: [
-      { title: "Book A Requisition", icon: "mdi-book-plus-outline" },
-      { title: "My Schedule", icon: "mdi-book-clock-outline" },
+      { title: "Book A Requisition", icon: "mdi-book-plus-outline", to: "/" },
+      { title: "My Schedule", icon: "mdi-book-clock-outline", to: "/schedule" },
       { title: "History", icon: "mdi-clipboard-text-clock-outline" },
       { title: "My Costs", icon: "mdi-currency-usd" },
       { title: "My Account", icon: "mdi-account" },
