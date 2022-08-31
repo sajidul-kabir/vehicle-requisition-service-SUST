@@ -32,7 +32,7 @@
           </v-col>
         </v-row>
         <v-row>
-          <v-col cols="12" md="8">
+          <v-col cols="12" md="6">
             <v-text-field
               v-model="designation"
               label="Designation & Department"
@@ -61,29 +61,103 @@
         </v-row>
 
         <v-row>
-          <v-col class="my-2 px-1" cols="12" sm="6">
-            <v-date-picker
-              v-if="openCal"
-              elevation="15"
-              v-model="date"
-              @dblclick:date="chooseDate"
-            ></v-date-picker>
+          <v-col cols="12" sm="6" md="6">
+            <v-menu
+              ref="menu"
+              v-model="menu"
+              :close-on-content-click="false"
+              :return-value.sync="date"
+              transition="scale-transition"
+              offset-y
+              min-width="auto"
+            >
+              <template v-slot:activator="{ on, attrs }">
+                <v-text-field
+                  v-model="date"
+                  label="Select Date"
+                  append-icon="mdi-calendar"
+                  readonly
+                  v-bind="attrs"
+                  v-on="on"
+                ></v-text-field>
+              </template>
+              <v-date-picker v-model="date" no-title scrollable>
+                <v-spacer></v-spacer>
+                <v-btn text color="primary" @click="menu = false">
+                  Cancel
+                </v-btn>
+                <v-btn text color="primary" @click="$refs.menu.save(date)">
+                  OK
+                </v-btn>
+              </v-date-picker>
+            </v-menu>
           </v-col>
         </v-row>
+
         <v-row>
-          <v-col cols="12" md="4">
-            <v-text-field
-              v-model="date"
-              label="Select Date"
-              append-icon="mdi-calendar"
-              @click:append="openCalendar"
-              required
+          <v-col cols="12" sm="5" md="4">
+            <v-menu
+              ref="menu"
+              v-model="menu2"
+              :close-on-content-click="false"
+              :nudge-right="40"
+              :return-value.sync="start_time"
+              transition="scale-transition"
+              offset-y
+              max-width="290px"
+              min-width="290px"
             >
-            </v-text-field>
+              <template v-slot:activator="{ on, attrs }">
+                <v-text-field
+                  v-model="start_time"
+                  label="Start Time"
+                  append-icon="mdi-clock-time-four-outline"
+                  readonly
+                  v-bind="attrs"
+                  v-on="on"
+                ></v-text-field>
+              </template>
+              <v-time-picker
+                v-if="menu2"
+                v-model="start_time"
+                full-width
+                :allowed-hours="allowedHoursStartTime"
+                @click:minute="$refs.menu.save(start_time)"
+              ></v-time-picker>
+            </v-menu>
           </v-col>
 
-          <v-col cols="12" md="4">
-            <v-text-field label="Select Time" required></v-text-field>
+          <v-col cols="12" sm="5" md="4">
+            <v-menu
+              ref="menux"
+              v-model="menu3"
+              :close-on-content-click="false"
+              :nudge-right="40"
+              :return-value.sync="end_time"
+              transition="scale-transition"
+              offset-y
+              max-width="290px"
+              min-width="290px"
+            >
+              <template v-slot:activator="{ on, attrs }">
+                <v-text-field
+                  :disabled="start_time === ''"
+                  v-model="end_time"
+                  label="End Time"
+                  append-icon="mdi-clock-time-four-outline"
+                  readonly
+                  v-bind="attrs"
+                  v-on="on"
+                ></v-text-field>
+              </template>
+              <v-time-picker
+                v-if="menu3"
+                v-model="end_time"
+                full-width
+                :allowed-hours="allowedHoursEndTime(start_time)"
+                @click:minute="$refs.menux.save(end_time)"
+              ></v-time-picker>
+            </v-menu>
           </v-col>
         </v-row>
       </v-container>
@@ -104,19 +178,36 @@ export default {
     users_phone: "",
     nameRules: [(v) => !!v || "Name is required"],
     date: "",
-    openCal: false,
+    start_time: "",
+    end_time: "",
+    menu: false,
+    modal: false,
+    modal2: false,
+    menu2: false,
+    menu3: false,
+    modal3: false,
     phoneRules: [
       (v) => !!v || "Phone is required",
       (v) => v.length === 11 || "Phone number must be less than 11 characters",
     ],
   }),
   methods: {
-    openCalendar() {
-      this.openCal = true;
+    allowedHoursStartTime(v) {
+      if (v >= 8 && v <= 20) {
+        console.log(v);
+        return v;
+      }
     },
-    chooseDate() {
-      console.log(this.date);
-      this.openCal = false;
+    allowedHoursEndTime(start_time) {
+      let num;
+      if (start_time[0] === "0") {
+        num = start_time[1];
+      } else {
+        num = start_time[0] + start_time[1];
+      }
+      num = parseInt(num);
+      console.log(num);
+      return [num + 1, num + 2, num + 3];
     },
   },
   components: { TeacherNav },
