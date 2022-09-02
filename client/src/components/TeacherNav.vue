@@ -4,7 +4,7 @@
       <template v-slot:prepend>
         <v-list-item two-line>
           <v-list-item-avatar>
-            <img src="https://randomuser.me/api/portraits/women/81.jpg" />
+            <img src="../assets/institute-office-1541422371.jpg" />
           </v-list-item-avatar>
 
           <v-list-item-content>
@@ -58,7 +58,11 @@ export default {
     items: [
       { title: "Book A Requisition", icon: "mdi-book-plus-outline", to: "/" },
       { title: "My Schedule", icon: "mdi-book-clock-outline", to: "/schedule" },
-      { title: "History", icon: "mdi-clipboard-text-clock-outline" },
+      {
+        title: "History",
+        icon: "mdi-clipboard-text-clock-outline",
+        to: "/history",
+      },
       { title: "My Costs", icon: "mdi-currency-usd" },
       { title: "My Account", icon: "mdi-account" },
     ],
