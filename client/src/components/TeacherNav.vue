@@ -31,7 +31,7 @@
 
     <v-app-bar
       app
-      color="#43a047"
+      color="teal"
       dark
       shrink-on-scroll
       src="../assets/sust-photo.png"
@@ -45,7 +45,8 @@
       </template>
       <v-app-bar-nav-icon @click="drawer = !drawer"></v-app-bar-nav-icon>
 
-      <v-toolbar-title>Welcome to Vehicle Requisition Service</v-toolbar-title>
+      <!-- <v-toolbar-title>Welcome to Vehicle Requisition Service</v-toolbar-title> -->
+      <slot></slot>
     </v-app-bar>
   </div>
 </template>
