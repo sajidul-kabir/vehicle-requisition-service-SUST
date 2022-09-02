@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div style="margin-bottom: 20px">
     <teacher-nav>
       <template>
         <v-toolbar-title>See History</v-toolbar-title>
@@ -46,7 +46,7 @@
     <v-card class="ml-12 mt-6" max-width="1000" outlined>
       <v-card-text class="ml-2">
         <div class="mb-2">3d ago</div>
-        <p class="text-h5 text--primary">You Have Submitted a Requisition</p>
+        <p class="text-h5 text--primary">Successfully Completed a Trip</p>
         <p class="text--primary mb-0">Date: 3/09/2022 ~ 8.00 AM - 11.00 AM</p>
         <p class="text--primary mb-0">Destination: Ambarkhana</p>
       </v-card-text>

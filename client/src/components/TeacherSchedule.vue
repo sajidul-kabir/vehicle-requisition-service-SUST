@@ -5,7 +5,7 @@
         <v-toolbar-title>My Schedule</v-toolbar-title>
       </template>
     </teacher-nav>
-    <v-card class="ml-12 mt-12" max-width="1000" elevation="4" outlined shaped>
+    <v-card class="ml-12 mt-12" max-width="1000" elevation="2" outlined>
       <v-card-text class="ml-2">
         <div class="mb-2">Requisition Overview</div>
         <p class="text-h4 text--primary">Starts in: 3 Hours</p>
@@ -19,7 +19,7 @@
         <v-btn outlined color="indigo" class="details">See Details</v-btn>
       </v-card-actions>
     </v-card>
-    <v-card class="ml-12 mt-12" max-width="1000" elevation="4" outlined shaped>
+    <v-card class="ml-12 mt-12" max-width="1000" elevation="2" outlined>
       <v-card-text class="ml-2">
         <div class="mb-2">Requisition Overview</div>
         <p class="text-h4 text--primary">Starts in: 12 Hours</p>
@@ -33,7 +33,7 @@
         <v-btn outlined color="indigo" class="details">See Details</v-btn>
       </v-card-actions>
     </v-card>
-    <v-card class="ml-12 mt-12" max-width="1000" elevation="4" outlined shaped>
+    <v-card class="ml-12 mt-12" max-width="1000" elevation="2" outlined>
       <v-card-text class="ml-2">
         <div class="mb-2">Requisition Overview</div>
         <p class="text-h4 text--primary">Starts in: 1 day 2 Hours</p>
