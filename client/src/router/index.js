@@ -4,6 +4,7 @@ import HomeView from "../views/HomeView.vue";
 import TeacherSchedule from "../components/Teacher/TeacherSchedule.vue";
 import TeacherHistory from "../components/Teacher/TeacherHistory.vue";
 import TransportHome from "../components/TransportOfficial/TransportHome.vue";
+import RequisitionDetails from "../components/TransportOfficial/RequisitionDetails.vue";
 
 Vue.use(VueRouter);
 
@@ -27,6 +28,11 @@ const routes = [
     path: "/transport-home",
     name: "TransportHome",
     component: TransportHome,
+  },
+  {
+    path: "/transport-home/335",
+    name: "Details",
+    component: RequisitionDetails,
   },
 ];
 

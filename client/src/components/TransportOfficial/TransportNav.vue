@@ -4,7 +4,9 @@
       <template v-slot:prepend>
         <v-list-item two-line>
           <v-list-item-avatar>
-            <img src="../../assets/institute-office-1541422371.jpg" />
+            <img
+              src="https://avatars0.githubusercontent.com/u/9064066?v=4&s=460"
+            />
           </v-list-item-avatar>
 
           <v-list-item-content>
