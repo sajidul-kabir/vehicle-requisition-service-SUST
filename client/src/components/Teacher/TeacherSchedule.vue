@@ -51,7 +51,7 @@
 </template>
 
 <script>
-import TeacherNav from "./TeacherNav.vue";
+import TeacherNav from "../Teacher/TeacherNav.vue";
 export default {
   components: {
     TeacherNav,

@@ -4,7 +4,7 @@
       <template v-slot:prepend>
         <v-list-item two-line>
           <v-list-item-avatar>
-            <img src="../assets/institute-office-1541422371.jpg" />
+            <img src="../../assets/institute-office-1541422371.jpg" />
           </v-list-item-avatar>
 
           <v-list-item-content>
@@ -34,7 +34,7 @@
       color="teal"
       dark
       shrink-on-scroll
-      src="../assets/sust-photo.png"
+      src="../../assets/sust-photo.png"
       fade-img-on-scroll
     >
       <template v-slot:img="{ props }">
@@ -56,7 +56,7 @@ export default {
   data: () => ({
     drawer: false,
     items: [
-      { title: "Book A Requisition", icon: "mdi-book-plus-outline", to: "/" },
+      { title: "Submit A Requisition", icon: "mdi-bus-clock", to: "/" },
       { title: "My Schedule", icon: "mdi-book-clock-outline", to: "/schedule" },
       {
         title: "History",

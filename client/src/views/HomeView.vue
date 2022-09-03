@@ -3,7 +3,7 @@
 </template>
 
 <script>
-import HelloWorld from "../components/TeacherHome.vue";
+import HelloWorld from "../components/Teacher/TeacherHome.vue";
 
 export default {
   name: "HomeView",

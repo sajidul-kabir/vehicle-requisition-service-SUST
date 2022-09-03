@@ -24,7 +24,7 @@
             <v-row class="form-row--title">
               <div class="form-header">
                 <img
-                  src="../assets/Shahjalal_University_of_Science_and_Technology_logo.png"
+                  src="../../assets/Shahjalal_University_of_Science_and_Technology_logo.png"
                   width="45px"
                   alt="sust_logo.png"
                 />

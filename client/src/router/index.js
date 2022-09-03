@@ -1,8 +1,9 @@
 import Vue from "vue";
 import VueRouter from "vue-router";
 import HomeView from "../views/HomeView.vue";
-import TeacherSchedule from "../components/TeacherSchedule.vue";
-import TeacherHistory from "../components/TeacherHistory.vue";
+import TeacherSchedule from "../components/Teacher/TeacherSchedule.vue";
+import TeacherHistory from "../components/Teacher/TeacherHistory.vue";
+import TransportHome from "../components/TransportOfficial/TransportHome.vue";
 
 Vue.use(VueRouter);
 
@@ -21,6 +22,11 @@ const routes = [
     path: "/history",
     name: "TeacherHistory",
     component: TeacherHistory,
+  },
+  {
+    path: "/transport-home",
+    name: "TransportHome",
+    component: TransportHome,
   },
 ];
 
