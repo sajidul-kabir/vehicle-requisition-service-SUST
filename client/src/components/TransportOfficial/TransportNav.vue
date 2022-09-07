@@ -66,14 +66,18 @@ export default {
       {
         title: "Drivers' Schedule",
         icon: "mdi-book-clock-outline",
-        to: "/schedule",
+        to: "/transport-schedule",
       },
       {
         title: "Granted Requisitons",
         icon: "mdi-check-circle-outline",
-        to: "/history",
+        to: "/granted-requisitions",
       },
-      { title: "Rejected Requistions", icon: "mdi-close-circle-outline" },
+      {
+        title: "Rejected Requistions",
+        icon: "mdi-close-circle-outline",
+        to: "rejected-requisitions",
+      },
       { title: "My Account", icon: "mdi-account" },
     ],
   }),

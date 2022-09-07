@@ -83,6 +83,7 @@ export default {
       { title: "Siam Ahmed" },
       { title: "Arian Islam" },
       { title: "Tunan Tahsin" },
+      { title: "KabirulSajid" },
     ],
   }),
   methods: {
