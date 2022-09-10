@@ -6,6 +6,34 @@
       </template>
     </transport-nav>
 
+    <div class="mt-12 mb-12">
+      <p v-if="selectedDriver">
+        Driver {{ selectedDriver }}'s work Schedule is being shown
+      </p>
+      <v-menu offset-y>
+        <template v-slot:activator="{ on, attrs }">
+          <v-btn
+            outlined
+            color="indigo"
+            v-bind="attrs"
+            v-on="on"
+            class="assign"
+          >
+            Choose Driver
+          </v-btn>
+        </template>
+        <v-list>
+          <v-list-item
+            v-for="(driver, index) in drivers"
+            :key="index"
+            link
+            @click="select(driver.title)"
+          >
+            <v-list-item-title>{{ driver.title }}</v-list-item-title>
+          </v-list-item>
+        </v-list>
+      </v-menu>
+    </div>
     <v-row class="fill-height">
       <v-col>
         <v-sheet height="64">
@@ -30,7 +58,7 @@
             <v-spacer></v-spacer>
           </v-toolbar>
         </v-sheet>
-        <v-sheet width="1000" class="mx-auto">
+        <v-sheet class="mx-auto">
           <v-calendar
             ref="calendar"
             :now="today"
@@ -53,38 +81,52 @@
 import TransportNav from "./TransportNav.vue";
 export default {
   data: () => ({
-    today: "2022-09-10",
+    today: "2022-09-11",
     focus: "",
 
     intervals: {
       first: 7,
       minutes: 60,
-      count: 14,
+      count: 11,
     },
 
     events: [
       {
         name: `Dr. Ahsan Habib ~ Destination: Ambarkhana`,
-        start: "2022-09-10 09:00",
-        end: "2022-09-10 10:00",
-        color: "red",
+        start: "2022-09-11 08:00",
+        end: "2022-09-11 11:00",
+        color: "indigo",
       },
       {
-        name: "Weekly Meeting",
-        start: "2022-09-11 09:00",
-        end: "2022-09-11 12:00",
+        name: "Dr. Md Forhad Rabbi ~ Destination: Airport",
+        start: "2022-09-11 12:00",
+        end: "2022-09-11 15:00",
+        color: "deep-purple",
       },
       {
-        name: "Meetingxx",
-        start: "2022-09-15 09:00",
-        end: "2022-09-15 12:00",
+        name: "Raihan Ullah ~ Destination: Shubidbazar",
+        start: "2022-09-12 10:00",
+        end: "2022-09-12 12:00",
+        color: "cyan",
       },
       {
-        name: "Mash Potatoes",
-        start: "2019-01-09 12:30",
-        end: "2019-01-09 15:30",
+        name: "Asif Mohammad Samir ~ Destination: Airport",
+        start: "2022-09-13 13:00",
+        end: "2022-09-13 15:00",
+        color: "indigo",
       },
     ],
+    selectedDriver: "Monir Hossain",
+    drivers: [
+      { title: "Monir Hossain" },
+      { title: "Siam Ahmed" },
+      { title: "Arian Islam" },
+      { title: "Tunan Tahsin" },
+      { title: "KabirulSajid" },
+    ],
+    select(driver) {
+      this.selectedDriver = driver;
+    },
   }),
   mounted() {
     this.$refs.calendar.checkChange();
