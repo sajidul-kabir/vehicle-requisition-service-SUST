@@ -6,8 +6,8 @@
       </template>
     </transport-nav>
 
-    <div class="mt-12 mb-12">
-      <p v-if="selectedDriver">
+    <div class="mt-12 mb-12 container">
+      <p v-if="selectedDriver" class="text-h5 text--primary">
         Driver {{ selectedDriver }}'s work Schedule is being shown
       </p>
       <v-menu offset-y>
@@ -60,11 +60,26 @@
         </v-sheet>
         <v-sheet class="mx-auto">
           <v-calendar
+            v-if="selectedDriver === 'Monir Hossain'"
             ref="calendar"
             :now="today"
             :value="today"
-            :events="events"
-            :color="events.color"
+            :events="firstEvents"
+            :color="firstEvents.color"
+            type="4day"
+            v-model="focus"
+            :first-interval="intervals.first"
+            :interval-minutes="intervals.minutes"
+            :interval-count="intervals.count"
+            @click:event="calendarEvent"
+          ></v-calendar>
+          <v-calendar
+            v-else
+            ref="calendar"
+            :now="today"
+            :value="today"
+            :events="secondEvents"
+            :color="secondEvents.color"
             type="4day"
             v-model="focus"
             :first-interval="intervals.first"
@@ -90,12 +105,13 @@ export default {
       count: 11,
     },
 
-    events: [
+    firstEvents: [
       {
         name: `Dr. Ahsan Habib ~ Destination: Ambarkhana`,
         start: "2022-09-11 08:00",
         end: "2022-09-11 11:00",
         color: "indigo",
+        to: "/transport-home/335",
       },
       {
         name: "Dr. Md Forhad Rabbi ~ Destination: Airport",
@@ -113,6 +129,28 @@ export default {
         name: "Asif Mohammad Samir ~ Destination: Airport",
         start: "2022-09-13 13:00",
         end: "2022-09-13 15:00",
+        color: "indigo",
+      },
+    ],
+
+    secondEvents: [
+      {
+        name: `Parthapratim Paul ~ Destination: Ambarkhana`,
+        start: "2022-09-11 09:00",
+        end: "2022-09-11 11:00",
+        color: "orange",
+      },
+
+      {
+        name: "Raihan Ullah ~ Destination: Shubidbazar",
+        start: "2022-09-12 10:00",
+        end: "2022-09-12 12:00",
+        color: "cyan",
+      },
+      {
+        name: "Asif Mohammad Samir ~ Destination: Airport",
+        start: "2022-09-13 8:00",
+        end: "2022-09-13 10:00",
         color: "indigo",
       },
     ],
@@ -140,6 +178,9 @@ export default {
     },
     next() {
       this.$refs.calendar.next();
+    },
+    calendarEvent() {
+      this.$router.push("/transport-home/335");
     },
   },
 
@@ -172,14 +213,8 @@ export default {
   right: 4px;
   margin-right: 0px;
 }
+.container {
+  display: flex;
+  justify-content: space-around;
+}
 </style>
-
-<!-- ref="calendar"
-v-model="focus"
-color="primary"
-type="category"
-category-show-all
-:categories="categories"
-:events="events"
-:event-color="getEventColor"
-@change="fetchEvents" -->
