@@ -65,14 +65,21 @@
             :now="today"
             :value="today"
             :events="firstEvents"
-            :color="firstEvents.color"
+            :event-color="firstEvents.color"
             type="4day"
             v-model="focus"
+            weekdays="weekday"
             :first-interval="intervals.first"
             :interval-minutes="intervals.minutes"
             :interval-count="intervals.count"
             @click:event="calendarEvent"
-          ></v-calendar>
+          >
+            <template v-slot:interval="{ weekday }">
+              <div v-if="weekday === 6 || weekday === 5" class="holiday">
+                Weekend
+              </div>
+            </template>
+          </v-calendar>
           <v-calendar
             v-else
             ref="calendar"
@@ -96,7 +103,7 @@
 import TransportNav from "./TransportNav.vue";
 export default {
   data: () => ({
-    today: "2022-09-11",
+    today: "2022-09-16",
     focus: "",
 
     intervals: {
@@ -104,6 +111,7 @@ export default {
       minutes: 60,
       count: 11,
     },
+    weekday: [3, 4, 5, 6, 0],
 
     firstEvents: [
       {
@@ -183,12 +191,19 @@ export default {
       this.$router.push("/transport-home/335");
     },
   },
+  computed: {},
 
   components: {
     TransportNav,
   },
 };
 </script>
+
+<!-- <style lang="scss" scoped>
+.theme--light.v-calendar-daily ::v-deep(.v-calendar-daily__day) {
+  background-color: aqua;
+}
+</style> -->
 
 <style scoped>
 .my-event {
@@ -216,5 +231,14 @@ export default {
 .container {
   display: flex;
   justify-content: space-around;
+}
+
+.holiday {
+  background: #eeeeee !important;
+  min-height: 50px;
+  font-size: 12px;
+  text-align: center;
+  color: #0000008c;
+  padding: 15px;
 }
 </style>
