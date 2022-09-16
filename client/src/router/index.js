@@ -8,6 +8,7 @@ import RequisitionDetails from "../components/TransportOfficial/RequisitionDetai
 import TransportGranted from "../components/TransportOfficial/TransportGranted.vue";
 import TransportRejected from "../components/TransportOfficial/TransportRejected.vue";
 import TransportSchedule from "../components/TransportOfficial/TransportSchedule.vue";
+import DriverHome from "../components/Driver/DriverHome.vue";
 
 Vue.use(VueRouter);
 
@@ -51,6 +52,11 @@ const routes = [
     path: "/transport-home/335",
     name: "Details",
     component: RequisitionDetails,
+  },
+  {
+    path: "/driver-home",
+    name: "DriverHome",
+    component: DriverHome,
   },
 ];
 
