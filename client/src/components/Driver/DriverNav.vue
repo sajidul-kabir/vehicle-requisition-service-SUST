@@ -59,12 +59,12 @@ export default {
       {
         title: "See Schedule",
         icon: "mdi-clipboard-list-outline",
-        to: "/transport-home",
+        to: "/driver-home",
       },
       {
         title: "Update Schedule",
         icon: "mdi-book-clock-outline",
-        to: "/transport-schedule",
+        to: "/driver-update-schedule",
       },
       {
         title: "Completed Requisitons",

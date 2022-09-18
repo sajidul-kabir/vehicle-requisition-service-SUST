@@ -1,39 +1,47 @@
 <template>
   <div style="margin-bottom: 20px">
-    <transport-nav>
+    <driver-nav>
       <template>
-        <v-toolbar-title>See Drivers' Schedule</v-toolbar-title>
+        <v-toolbar-title>Update Schedule</v-toolbar-title>
       </template>
-    </transport-nav>
+    </driver-nav>
 
-    <div class="mt-12 mb-12 container">
-      <p v-if="selectedDriver" class="text-h5 text--primary">
-        Driver {{ selectedDriver }}'s work Schedule is being shown
-      </p>
-      <v-menu offset-y>
-        <template v-slot:activator="{ on, attrs }">
-          <v-btn
-            outlined
-            color="indigo"
-            v-bind="attrs"
-            v-on="on"
-            class="assign"
-          >
-            Choose Driver
-          </v-btn>
-        </template>
-        <v-list>
-          <v-list-item
-            v-for="(driver, index) in drivers"
-            :key="index"
-            link
-            @click="select(driver.title)"
-          >
-            <v-list-item-title>{{ driver.title }}</v-list-item-title>
-          </v-list-item>
-        </v-list>
-      </v-menu>
-    </div>
+    <v-row>
+      <v-col cols="12" sm="6" md="6" class="ml-6 mt-4">
+        <v-menu
+          ref="menu"
+          v-model="menu"
+          :close-on-content-click="false"
+          :return-value.sync="unavailableDate"
+          transition="scale-transition"
+          offset-y
+          min-width="auto"
+        >
+          <template v-slot:activator="{ on, attrs }">
+            <v-text-field
+              v-model="unavailableDate"
+              label="Select Unavailable Date"
+              append-icon="mdi-calendar"
+              readonly
+              v-bind="attrs"
+              v-on="on"
+            ></v-text-field>
+          </template>
+          <v-date-picker v-model="unavailableDate" no-title scrollable>
+            <v-spacer></v-spacer>
+            <v-btn text color="primary" @click="menu = false"> Cancel </v-btn>
+            <v-btn
+              text
+              color="primary"
+              @click="$refs.menu.save(unavailableDate)"
+            >
+              OK
+            </v-btn>
+          </v-date-picker>
+        </v-menu>
+      </v-col>
+    </v-row>
+
     <v-row class="fill-height">
       <v-col>
         <v-sheet height="64">
@@ -60,51 +68,54 @@
         </v-sheet>
         <v-sheet class="mx-auto">
           <v-calendar
-            v-if="selectedDriver === 'Monir Hossain'"
             ref="calendar"
             :now="today"
             :value="today"
-            :events="firstEvents"
-            :event-color="firstEvents.color"
+            :events="events"
+            :color="events.color"
             type="4day"
             v-model="focus"
-            weekdays="weekday"
             :first-interval="intervals.first"
             :interval-minutes="intervals.minutes"
             :interval-count="intervals.count"
             @click:event="calendarEvent"
           >
-            <template v-slot:interval="{ weekday }">
+            <template v-slot:interval="{ weekday, day, month, year }">
               <div v-if="weekday === 6 || weekday === 5" class="holiday">
                 Weekend
               </div>
+              <div v-if="unavailableDate">
+                <div
+                  v-if="
+                    day === unavailableDay &&
+                    month === unavailableMonth &&
+                    year === unavailableYear
+                  "
+                  class="holiday"
+                >
+                  Unavailable
+                </div>
+              </div>
             </template>
           </v-calendar>
-          <v-calendar
-            v-else
-            ref="calendar"
-            :now="today"
-            :value="today"
-            :events="secondEvents"
-            :color="secondEvents.color"
-            type="4day"
-            v-model="focus"
-            :first-interval="intervals.first"
-            :interval-minutes="intervals.minutes"
-            :interval-count="intervals.count"
-          ></v-calendar>
         </v-sheet>
       </v-col>
     </v-row>
   </div>
 </template>
-
 <script>
-import TransportNav from "./TransportNav.vue";
+import DriverNav from "./DriverNav.vue";
+
 export default {
   data: () => ({
-    today: "2022-09-16",
+    today: "2022-09-17",
     focus: "",
+    unavailableDate: "",
+    unavailableDay: "",
+    unavailableMonth: "",
+    unavailableYear: "",
+    submitted: false,
+    menu: false,
 
     intervals: {
       first: 7,
@@ -112,66 +123,33 @@ export default {
       count: 11,
     },
 
-    firstEvents: [
+    events: [
       {
         name: `Dr. Ahsan Habib ~ Destination: Ambarkhana`,
-        start: "2022-09-11 08:00",
-        end: "2022-09-11 11:00",
+        start: "2022-09-18 08:00",
+        end: "2022-09-18 11:00",
         color: "indigo",
         to: "/transport-home/335",
       },
       {
         name: "Dr. Md Forhad Rabbi ~ Destination: Airport",
-        start: "2022-09-11 12:00",
-        end: "2022-09-11 15:00",
+        start: "2022-09-18 12:00",
+        end: "2022-09-18 15:00",
         color: "deep-purple",
       },
       {
         name: "Raihan Ullah ~ Destination: Shubidbazar",
-        start: "2022-09-12 10:00",
-        end: "2022-09-12 12:00",
+        start: "2022-09-19 10:00",
+        end: "2022-09-19 12:00",
         color: "cyan",
       },
       {
         name: "Asif Mohammad Samir ~ Destination: Airport",
-        start: "2022-09-13 13:00",
-        end: "2022-09-13 15:00",
+        start: "2022-09-20 13:00",
+        end: "2022-09-20 15:00",
         color: "indigo",
       },
     ],
-
-    secondEvents: [
-      {
-        name: `Parthapratim Paul ~ Destination: Ambarkhana`,
-        start: "2022-09-11 09:00",
-        end: "2022-09-11 11:00",
-        color: "orange",
-      },
-
-      {
-        name: "Raihan Ullah ~ Destination: Shubidbazar",
-        start: "2022-09-12 10:00",
-        end: "2022-09-12 12:00",
-        color: "cyan",
-      },
-      {
-        name: "Asif Mohammad Samir ~ Destination: Airport",
-        start: "2022-09-13 8:00",
-        end: "2022-09-13 10:00",
-        color: "indigo",
-      },
-    ],
-    selectedDriver: "Monir Hossain",
-    drivers: [
-      { title: "Monir Hossain" },
-      { title: "Siam Ahmed" },
-      { title: "Arian Islam" },
-      { title: "Tunan Tahsin" },
-      { title: "KabirulSajid" },
-    ],
-    select(driver) {
-      this.selectedDriver = driver;
-    },
   }),
   mounted() {
     this.$refs.calendar.checkChange();
@@ -190,20 +168,19 @@ export default {
       this.$router.push("/transport-home/335");
     },
   },
-  computed: {},
-
+  watch: {
+    unavailableDate(value) {
+      let date = new Date(value);
+      this.unavailableDay = date.getDate();
+      this.unavailableMonth = date.getMonth() + 1;
+      this.unavailableYear = date.getFullYear();
+    },
+  },
   components: {
-    TransportNav,
+    DriverNav,
   },
 };
 </script>
-
-<!-- <style lang="scss" scoped>
-.theme--light.v-calendar-daily ::v-deep(.v-calendar-daily__day) {
-  background-color: aqua;
-}
-</style> -->
-
 <style scoped>
 .my-event {
   overflow: hidden;
