@@ -54,7 +54,7 @@
 <script>
 export default {
   data: () => ({
-    drawer: false,
+    drawer: true,
     items: [
       {
         title: "See Schedule",

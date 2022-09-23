@@ -54,7 +54,7 @@
 <script>
 export default {
   data: () => ({
-    drawer: false,
+    drawer: true,
     items: [
       { title: "Submit A Requisition", icon: "mdi-bus-clock", to: "/" },
       { title: "My Schedule", icon: "mdi-book-clock-outline", to: "/schedule" },
