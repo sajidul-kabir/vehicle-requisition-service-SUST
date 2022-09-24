@@ -69,7 +69,7 @@ export default {
       {
         title: "Completed Requisitons",
         icon: "mdi-check-circle-outline",
-        to: "/granted-requisitions",
+        to: "/driver-completed-requisitions",
       },
       { title: "My Account", icon: "mdi-account" },
     ],

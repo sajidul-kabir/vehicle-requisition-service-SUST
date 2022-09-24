@@ -10,6 +10,7 @@ import TransportRejected from "../components/TransportOfficial/TransportRejected
 import TransportSchedule from "../components/TransportOfficial/TransportSchedule.vue";
 import DriverHome from "../components/Driver/DriverHome.vue";
 import DriverUpdate from "../components/Driver/DriverUpdate.vue";
+import DriverCompleted from "../components/Driver/DriverCompleted.vue";
 
 Vue.use(VueRouter);
 
@@ -63,6 +64,11 @@ const routes = [
     path: "/driver-update-schedule",
     name: "DriverUpdate",
     component: DriverUpdate,
+  },
+  {
+    path: "/driver-completed-requisitions",
+    name: "DriverCompleted",
+    component: DriverCompleted,
   },
 ];
 
