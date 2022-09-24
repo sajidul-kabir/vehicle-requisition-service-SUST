@@ -21,7 +21,7 @@
       <p><strong>User's Name:</strong> Dr. Ahsan Habib</p>
       <p><strong>User's Phone:</strong> 017xxxxxxxx</p>
     </div>
-    <p class="form-newLine"><strong>Date:</strong> 3/09/2022</p>
+    <p class="form-newLine"><strong>Date:</strong> 25/09/2022</p>
     <div class="form-row">
       <p><strong>Start Time:</strong> 8:00</p>
       <p><strong>End Time:</strong> 11:00</p>

@@ -142,7 +142,7 @@ export default {
         teacherName: "Dr. Ahsan Habib",
         startTime: "8.00",
         endTime: "11.00",
-        date: "24/09/2022",
+        date: "25/09/2022",
         dest: "Ambarkhana",
         need: "Official",
       },
@@ -151,7 +151,7 @@ export default {
         teacherName: "Raihan Ullah",
         startTime: "8.00",
         endTime: "11.00",
-        date: "24/09/2022",
+        date: "25/09/2022",
         dest: "Shubidbazar",
         need: "Personal",
       },
@@ -160,7 +160,7 @@ export default {
         teacherName: "Dr. Fazle Rabbi",
         startTime: "13.00",
         endTime: "15.00",
-        date: "24/09/2022",
+        date: "25/09/2022",
         dest: "Ambarkhana",
         need: "Official",
       },
@@ -169,7 +169,7 @@ export default {
         teacherName: "Dr. Ahsan Habib",
         startTime: "10.00",
         endTime: "13.00",
-        date: "25/09/2022",
+        date: "26/09/2022",
         dest: "Airport",
         need: "Personal",
       },
@@ -178,7 +178,7 @@ export default {
         teacherName: "Parthapratim Paul",
         startTime: "10.00",
         endTime: "13.00",
-        date: "25/09/2022",
+        date: "26/09/2022",
         dest: "Airport",
         need: "Official",
       },
@@ -187,7 +187,7 @@ export default {
         teacherName: "Enamul Hasan",
         startTime: "8.00",
         endTime: "11.00",
-        date: "25/09/2022",
+        date: "26/09/2022",
         dest: "Uposhahar",
         need: "Personal",
       },
@@ -196,7 +196,7 @@ export default {
         teacherName: "Raihan Ullah",
         startTime: "8.00",
         endTime: "10.00",
-        date: "26/09/2022",
+        date: "27/09/2022",
         dest: "Airport",
         need: "Official",
       },
@@ -210,8 +210,8 @@ export default {
     tabBtn() {
       this.view = "tab";
     },
-    rowClick(d1, d2) {
-      console.log(d1, d2);
+    rowClick() {
+      this.$router.push("/transport-home/335");
     },
   },
   computed: {
