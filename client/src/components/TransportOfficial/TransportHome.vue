@@ -29,7 +29,9 @@
           <p class="text-h5 text--primary">
             Dr. Ahsan Habib has Submitted a Requisition Form
           </p>
-          <p class="text--primary mb-0">Date: 3/09/2022 ~ 8.00 AM - 11.00 AM</p>
+          <p class="text--primary mb-0">
+            Date: 25/09/2022 ~ 8.00 AM - 11.00 AM
+          </p>
           <p class="text--primary mb-0">Destination: Ambarkhana</p>
           <p class="text--primary mb-0">Official Need</p>
         </v-card-text>
@@ -51,7 +53,9 @@
           <p class="text-h5 text--primary">
             Dr. Md Forhad Rabbi has Submitted a Requisition Form
           </p>
-          <p class="text--primary mb-0">Date: 3/09/2022 ~ 10.00 AM - 1.00 PM</p>
+          <p class="text--primary mb-0">
+            Date: 25/09/2022 ~ 10.00 AM - 1.00 PM
+          </p>
           <p class="text--primary mb-0">Destination: Airport</p>
           <p class="text--primary mb-0">Official Need</p>
         </v-card-text>
@@ -71,7 +75,9 @@
           <p class="text-h5 text--primary">
             Enamul Hassan has Submitted a Requisition Form
           </p>
-          <p class="text--primary mb-0">Date: 4/09/2022 ~ 8.00 AM - 11.00 AM</p>
+          <p class="text--primary mb-0">
+            Date: 26/09/2022 ~ 8.00 AM - 11.00 AM
+          </p>
           <p class="text--primary mb-0">Destination: Ambarkhana</p>
           <p class="text--primary mb-0">Personal Need</p>
         </v-card-text>
@@ -83,7 +89,7 @@
     </div>
 
     <div v-else>
-      <v-card class="ml-12 mt-12">
+      <v-card class="ml-12 mt-12 mr-6">
         <v-card-title>
           Requisition Overview
           <v-spacer></v-spacer>
@@ -101,7 +107,8 @@
           :search="search"
           @click:row="rowClick"
           class="d-tab"
-        ></v-data-table>
+        >
+        </v-data-table>
       </v-card>
     </div>
   </div>
@@ -141,7 +148,7 @@ export default {
       },
       {
         name: "ID #336",
-        teacherName: "Dr. X",
+        teacherName: "Raihan Ullah",
         startTime: "8.00",
         endTime: "11.00",
         date: "24/09/2022",
@@ -150,7 +157,7 @@ export default {
       },
       {
         name: "ID #337",
-        teacherName: "Dr. Y",
+        teacherName: "Dr. Fazle Rabbi",
         startTime: "13.00",
         endTime: "15.00",
         date: "24/09/2022",
@@ -165,6 +172,33 @@ export default {
         date: "25/09/2022",
         dest: "Airport",
         need: "Personal",
+      },
+      {
+        name: "ID #339",
+        teacherName: "Parthapratim Paul",
+        startTime: "10.00",
+        endTime: "13.00",
+        date: "25/09/2022",
+        dest: "Airport",
+        need: "Official",
+      },
+      {
+        name: "ID #340",
+        teacherName: "Enamul Hasan",
+        startTime: "8.00",
+        endTime: "11.00",
+        date: "25/09/2022",
+        dest: "Uposhahar",
+        need: "Personal",
+      },
+      {
+        name: "ID #341",
+        teacherName: "Raihan Ullah",
+        startTime: "8.00",
+        endTime: "10.00",
+        date: "26/09/2022",
+        dest: "Airport",
+        need: "Official",
       },
     ],
   }),
