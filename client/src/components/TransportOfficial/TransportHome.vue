@@ -34,6 +34,7 @@
           </p>
           <p class="text--primary mb-0">Destination: Ambarkhana</p>
           <p class="text--primary mb-0">Official Need</p>
+          <p class="text--primary mb-0">unOfficial Need</p>
         </v-card-text>
 
         <v-card-actions class="mb-2 ml-2">
