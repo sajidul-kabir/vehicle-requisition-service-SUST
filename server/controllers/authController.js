@@ -148,6 +148,63 @@ exports.signup = catchAsync(async (req, res, next) => {
   }
 });
 
+exports.login = catchAsync(async (req, res, next) => {
+  const { role } = req.body;
+  if (!role) {
+    return next(new AppError("Specify a role", 400));
+  }
+
+  const { username, password } = req.body;
+
+  //Check whether credentials are provided
+  if (!username || !password) {
+    return next(new AppError("provide the required fields", 400));
+  }
+  let user;
+
+  if (role === "teacher") {
+    //Check whether username matches
+    const username_query = "SELECT * FROM teachers WHERE username=?";
+    user = await pool.query(username_query, [username]);
+  } else if (role === "transport") {
+    //Check whether username matches
+    const username_query = "SELECT * FROM transport_section WHERE username=?";
+    user = await pool.query(username_query, [username]);
+  } else if (role === "driver") {
+    //Check whether username matches
+    const username_query = "SELECT * FROM drivers WHERE username=?";
+    user = await pool.query(username_query, [username]);
+  }
+
+  if (user[0].length === 0) {
+    return next(new AppError("Invalid username", 404));
+  }
+
+  //Check whether password matches
+  if (
+    user[0].length > 0 &&
+    (await bcrypt.compare(password, user[0][0].password))
+  ) {
+    const accessToken = generateToken(username);
+    const cookieOptions = {
+      expires: new Date(
+        Date.now() + process.env.JWT_COOKIE_EXPIRES_IN * 24 * 60 * 60 * 1000
+      ),
+      httpOnly: true,
+    };
+
+    res.cookie("jwt", accessToken, cookieOptions);
+    req.userRole = role;
+    res.status(200).json({
+      message: "successfully Logged in",
+      accessToken,
+      role,
+    });
+  } else {
+    return next(new AppError("Wrong Password", 404));
+  }
+});
+
 //Token Creation
 const generateToken = (user) => {
   return jwt.sign(user, process.env.ACCESSKEY);
