@@ -4,8 +4,8 @@ const AppError = require("../utils/AppError");
 const catchAsync = require("../utils/catchAsync");
 
 exports.getMe = catchAsync(async (req, res, next) => {
-  const { role } = req.body;
-  const username = req.user;
+  const { username, role } = req.body;
+  //const username = req.user;
   let username_query;
   if (role === "teacher") {
     username_query = "SELECT * FROM teachers where username=?";

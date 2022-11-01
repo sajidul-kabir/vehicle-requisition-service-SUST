@@ -8,7 +8,7 @@ const router = express.Router();
 router.route("/signup").post(authController.signup);
 router.route("/login").post(authController.login);
 
-router.use(authMiddleware.protectRoute);
+//router.use(authMiddleware.protectRoute);
 
-router.route("/me").get(userController.getMe);
+router.route("/me").post(userController.getMe);
 module.exports = router;

@@ -185,20 +185,21 @@ exports.login = catchAsync(async (req, res, next) => {
     user[0].length > 0 &&
     (await bcrypt.compare(password, user[0][0].password))
   ) {
-    const accessToken = generateToken(username);
-    const cookieOptions = {
+    var accessToken = generateToken(username);
+    var cookieOptions = {
       expires: new Date(
         Date.now() + process.env.JWT_COOKIE_EXPIRES_IN * 24 * 60 * 60 * 1000
       ),
       httpOnly: true,
     };
-
+    //console.log(accessToken, cookieOptions);
     res.cookie("jwt", accessToken, cookieOptions);
-    req.userRole = role;
+
     res.status(200).json({
       message: "successfully Logged in",
       accessToken,
       role,
+      username,
     });
   } else {
     return next(new AppError("Wrong Password", 404));
