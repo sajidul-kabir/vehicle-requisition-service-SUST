@@ -1,14 +1,5 @@
 <template>
   <div>
-    <v-alert
-      v-if="submitted"
-      outlined
-      type="success"
-      text
-      :dismissible="submitted"
-    >
-      You have successfully submitted a requisiton
-    </v-alert>
     <div>
       <TeacherNav>
         <template>
@@ -272,6 +263,7 @@ export default {
     },
     submit() {
       this.submitted = true;
+      console.log(this.date, this.start_time, this.end_time);
     },
   },
   components: { TeacherNav },

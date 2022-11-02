@@ -48,8 +48,9 @@ exports.signup = catchAsync(async (req, res, next) => {
       password: hash,
     };
 
-    await pool.query("INSERT INTO teachers SET ?", newTeacher);
-    const accessToken = generateToken(username);
+    const teacher = await pool.query("INSERT INTO teachers SET ?", newTeacher);
+    //console.log(teacher[0].insertId);
+    const accessToken = generateToken(teacher[0].insertId);
 
     const cookieOptions = {
       expires: new Date(
@@ -87,8 +88,11 @@ exports.signup = catchAsync(async (req, res, next) => {
       password: hash,
     };
 
-    await pool.query("INSERT INTO transport_section SET ?", newTransport);
-    const accessToken = generateToken(username);
+    const transport = await pool.query(
+      "INSERT INTO transport_section SET ?",
+      newTransport
+    );
+    const accessToken = generateToken(transport[0].insertId);
 
     const cookieOptions = {
       expires: new Date(
@@ -126,8 +130,8 @@ exports.signup = catchAsync(async (req, res, next) => {
       password: hash,
     };
 
-    await pool.query("INSERT INTO drivers SET ?", newDriver);
-    const accessToken = generateToken(username);
+    const driver = await pool.query("INSERT INTO drivers SET ?", newDriver);
+    const accessToken = generateToken(driver[0].insertId);
 
     const cookieOptions = {
       expires: new Date(
@@ -185,7 +189,8 @@ exports.login = catchAsync(async (req, res, next) => {
     user[0].length > 0 &&
     (await bcrypt.compare(password, user[0][0].password))
   ) {
-    var accessToken = generateToken(username);
+    // console.log(user[0][0]);
+    var accessToken = generateToken(user[0][0].id);
     var cookieOptions = {
       expires: new Date(
         Date.now() + process.env.JWT_COOKIE_EXPIRES_IN * 24 * 60 * 60 * 1000
