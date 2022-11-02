@@ -37,3 +37,50 @@ exports.getAPendingRequisition = catchAsync(async (req, res, next) => {
     data: pending_requisition[0],
   });
 });
+
+exports.grantARequisition = catchAsync(async (req, res, next) => {
+  const { requisition_id, driver_id } = req.body;
+
+  if (!requisition_id || !driver_id) {
+    return next(new AppError("provide the required fields", 400));
+  }
+
+  const newGrantedRequisition = {
+    requisition_id,
+    driver_id,
+    granted_by: req.user,
+  };
+
+  const alterQuery = `UPDATE requisitions
+  SET status = 'granted'
+  WHERE id = ${requisition_id}`;
+
+  await pool.execute(alterQuery);
+
+  const grantedRequsition = await pool.query(
+    "INSERT INTO granted_requisitions SET ?",
+    newGrantedRequisition
+  );
+  res.status(200).json({
+    message: "successfully granted",
+    data: grantedRequsition,
+  });
+});
+
+exports.rejectARequisition = catchAsync(async (req, res, next) => {
+  const { requisition_id } = req.body;
+
+  if (!requisition_id) {
+    return next(new AppError("provide the required fields", 400));
+  }
+
+  const alterQuery = `UPDATE requisitions
+  SET status = 'rejected'
+  WHERE id = ${requisition_id}`;
+
+  await pool.execute(alterQuery);
+
+  res.status(200).json({
+    message: "rejected",
+  });
+});
