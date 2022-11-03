@@ -19,72 +19,38 @@
     </div>
 
     <div v-if="view === 'grid'">
-      <v-card class="ml-12 mt-12" max-width="1000" elevation="2" outlined>
+      <v-card
+        v-for="requisition in requisitions"
+        :key="requisition.id"
+        class="ml-12 mt-12"
+        max-width="1000"
+        elevation="2"
+        outlined
+      >
         <v-card-text class="ml-2">
           <div class="text-flex">
-            <div>3s ago</div>
-            <div>Requisition ID #335</div>
+            <div>{{ requisition.created_at }}</div>
+            <div>Requisition ID #{{ requisition.requisition_id }}</div>
           </div>
 
           <p class="text-h5 text--primary">
-            Dr. Ahsan Habib has Submitted a Requisition Form
+            {{ requisition.fullname }} has Submitted a Requisition Form
           </p>
           <p class="text--primary mb-0">
-            Date: 25/09/2022 ~ 8.00 AM - 11.00 AM
+            Date: {{ requisition.selected_date }} ~
+            {{ requisition.start_time }} -
+            {{ requisition.end_time }}
           </p>
-          <p class="text--primary mb-0">Destination: Ambarkhana</p>
-          <p class="text--primary mb-0">Official Need</p>
-          <p class="text--primary mb-0">unOfficial Need</p>
+          <p class="text--primary mb-0">
+            Destination: {{ requisition.destination }}
+          </p>
+          <p class="text--primary mb-0">{{ requisition.need }} Need</p>
         </v-card-text>
 
         <v-card-actions class="mb-2 ml-2">
           <router-link to="/transport-home/335">
             <v-btn outlined color="indigo" class="details">See Details</v-btn>
           </router-link>
-        </v-card-actions>
-      </v-card>
-
-      <v-card class="ml-12 mt-12" max-width="1000" elevation="2" outlined>
-        <v-card-text class="ml-2">
-          <div class="text-flex">
-            <div>5min ago</div>
-            <div>Requisition ID #336</div>
-          </div>
-
-          <p class="text-h5 text--primary">
-            Dr. Md Forhad Rabbi has Submitted a Requisition Form
-          </p>
-          <p class="text--primary mb-0">
-            Date: 25/09/2022 ~ 10.00 AM - 1.00 PM
-          </p>
-          <p class="text--primary mb-0">Destination: Airport</p>
-          <p class="text--primary mb-0">Official Need</p>
-        </v-card-text>
-
-        <v-card-actions class="mb-2 ml-2">
-          <v-btn outlined color="indigo" class="details">See Details</v-btn>
-        </v-card-actions>
-      </v-card>
-
-      <v-card class="ml-12 mt-12" max-width="1000" elevation="2" outlined>
-        <v-card-text class="ml-2">
-          <div class="text-flex">
-            <div>2hrs ago</div>
-            <div>Requisition ID #337</div>
-          </div>
-
-          <p class="text-h5 text--primary">
-            Enamul Hassan has Submitted a Requisition Form
-          </p>
-          <p class="text--primary mb-0">
-            Date: 26/09/2022 ~ 8.00 AM - 11.00 AM
-          </p>
-          <p class="text--primary mb-0">Destination: Ambarkhana</p>
-          <p class="text--primary mb-0">Personal Need</p>
-        </v-card-text>
-
-        <v-card-actions class="mb-2 ml-2">
-          <v-btn outlined color="indigo" class="details">See Details</v-btn>
         </v-card-actions>
       </v-card>
     </div>
@@ -116,91 +82,58 @@
 </template>
 
 <script>
+import api from "@/api";
+import axios from "axios";
+import TimeAgo from "javascript-time-ago";
+// English.
+import en from "javascript-time-ago/locale/en";
 import TransportNav from "./TransportNav.vue";
 export default {
+  created() {
+    const config = {
+      headers: { Authorization: `Bearer ${this.$store.getters["auth/token"]}` },
+    };
+    //console.log(this.$store.getters["auth/token"]);
+    axios
+      .get(`${api}/transport/pending`, config)
+      .then((res) => {
+        console.log(res);
+        this.requisitions = res.data.data;
+
+        TimeAgo.addDefaultLocale(en);
+
+        this.requisitions.forEach((requisition) => {
+          const timeAgo = new TimeAgo("en-US");
+          let date = timeAgo.format(Date.parse(requisition.created_at));
+          requisition.created_at = date;
+
+          requisition.selected_date = requisition.selected_date.split("T")[0];
+        });
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  },
+
   data: () => ({
     view: "grid",
     show: false,
-
+    requisitions: [],
     search: "",
+
     headers: [
       {
         text: "Requisition ID",
         align: "start",
         sortable: true,
-        value: "name",
+        value: "requisition_id",
       },
-      { text: "Teachers name", value: "teacherName" },
-      { text: "Start-time", value: "startTime" },
-      { text: "End-time", value: "endTime" },
-      { text: "Date", value: "date" },
-      { text: "Destination", value: "dest" },
+      { text: "Teachers name", value: "fullname" },
+      { text: "Start-time", value: "start_time" },
+      { text: "End-time", value: "end_time" },
+      { text: "Date", value: "selected_date" },
+      { text: "Destination", value: "destination" },
       { text: "Need", value: "need" },
-    ],
-    requisitions: [
-      {
-        name: "ID #335",
-        teacherName: "Dr. Ahsan Habib",
-        startTime: "8.00",
-        endTime: "11.00",
-        date: "25/09/2022",
-        dest: "Ambarkhana",
-        need: "Official",
-      },
-      {
-        name: "ID #336",
-        teacherName: "Raihan Ullah",
-        startTime: "8.00",
-        endTime: "11.00",
-        date: "25/09/2022",
-        dest: "Shubidbazar",
-        need: "Personal",
-      },
-      {
-        name: "ID #337",
-        teacherName: "Dr. Fazle Rabbi",
-        startTime: "13.00",
-        endTime: "15.00",
-        date: "25/09/2022",
-        dest: "Ambarkhana",
-        need: "Official",
-      },
-      {
-        name: "ID #338",
-        teacherName: "Dr. Ahsan Habib",
-        startTime: "10.00",
-        endTime: "13.00",
-        date: "26/09/2022",
-        dest: "Airport",
-        need: "Personal",
-      },
-      {
-        name: "ID #339",
-        teacherName: "Parthapratim Paul",
-        startTime: "10.00",
-        endTime: "13.00",
-        date: "26/09/2022",
-        dest: "Airport",
-        need: "Official",
-      },
-      {
-        name: "ID #340",
-        teacherName: "Enamul Hasan",
-        startTime: "8.00",
-        endTime: "11.00",
-        date: "26/09/2022",
-        dest: "Uposhahar",
-        need: "Personal",
-      },
-      {
-        name: "ID #341",
-        teacherName: "Raihan Ullah",
-        startTime: "8.00",
-        endTime: "10.00",
-        date: "27/09/2022",
-        dest: "Airport",
-        need: "Official",
-      },
     ],
   }),
 

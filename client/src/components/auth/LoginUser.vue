@@ -43,8 +43,8 @@
 </template>
 
 <script>
-// import axios from "axios";
-// import api from "../../api";
+//mport axios from "axios";
+//import api from "../../api";
 import { mapActions } from "vuex";
 export default {
   data() {
@@ -77,31 +77,35 @@ export default {
           console.log(err.response.data.message);
         });
 
-      //   axios
-      //     .post(`${api}/users/login`, this.user, {
-      //       withCredentials: true,
-      //     })
-      //     .then((res) => {
-      //       console.log(res);
-      //       //   this.$store.commit('change', this.user.username);
-      //       //   //this.$store.commit('changePhoto', this.user.username);
-      //       if (this.role === "teacher") {
-      //         this.$router.push("/teacher-home");
-      //       } else if (this.role === "transport") {
-      //         this.$router.push("/transport-home");
-      //       } else if (this.role === "driver") {
-      //         this.$router.push("/driver-home");
-      //       }
-      //     })
-      //     .catch((err) => {
-      //       console.log(err.response.data.message);
-      //       //   if (err.response.data.message === 'Invalid username') {
-      //       //     this.wrongUser = true;
-      //       //   }
-      //       //   if (err.response.data.message === 'Wrong Password') {
-      //       //     this.wrongPass = true;
-      //       //   }
-      //     });
+      // axios
+      //   .post(`${api}/users/login`, this.user, {
+      //     withCredentials: true,
+
+      //   })
+      //   .then((res) => {
+      //     console.log(res);
+      //     this.$store.commit("SET_TOKEN", res.data.accessToken);
+      //     this.$store.commit("SET_USER", res.data.username);
+      //     this.$store.commit("SET_ROLE", res.data.role);
+      //     // //   this.$store.commit('change', this.user.username);
+      //     // //   //this.$store.commit('changePhoto', this.user.username);
+      //     if (this.role === "teacher") {
+      //       this.$router.push("/teacher-home");
+      //     } else if (this.role === "transport") {
+      //       this.$router.push("/transport-home");
+      //     } else if (this.role === "driver") {
+      //       this.$router.push("/driver-home");
+      //     }
+      //   })
+      //   .catch((err) => {
+      //     console.log(err.response.data.message);
+      //     //   if (err.response.data.message === 'Invalid username') {
+      //     //     this.wrongUser = true;
+      //     //   }
+      //     //   if (err.response.data.message === 'Wrong Password') {
+      //     //     this.wrongPass = true;
+      //     //   }
+      //   });
     },
   },
 };

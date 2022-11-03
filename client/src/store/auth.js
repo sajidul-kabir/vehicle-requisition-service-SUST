@@ -21,6 +21,9 @@ export default {
     role(state) {
       return state.role;
     },
+    token(state) {
+      return state.token;
+    },
   },
   mutations: {
     SET_TOKEN(state, token) {
@@ -39,14 +42,30 @@ export default {
       let response = await axios.post(`${api}/users/login`, credentials, {
         withCredentials: true,
       });
+
       console.log(response);
       return dispatch("attempt", response.data);
       //console.log(response.data);
     },
     async attempt({ commit }, data) {
       commit("SET_TOKEN", data.accessToken);
-      commit("SET_USER", data.username);
-      commit("SET_ROLE", data.role);
+      const user = {
+        username: data.username,
+        role: data.role,
+      };
+      try {
+        let response = await axios.post(`${api}/users/me`, user, {
+          headers: { Authorization: `Bearer ${data.accessToken}` },
+        });
+
+        console.log(response, "RESPONSE");
+        commit("SET_USER", data.username);
+        commit("SET_ROLE", data.role);
+      } catch (e) {
+        commit("SET_USER", null);
+        commit("SET_ROLE", null);
+        console.log(e);
+      }
     },
   },
 };

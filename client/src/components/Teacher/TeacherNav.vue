@@ -57,11 +57,15 @@ export default {
     drawer: true,
     items: [
       { title: "Submit A Requisition", icon: "mdi-bus-clock", to: "/" },
-      { title: "My Schedule", icon: "mdi-book-clock-outline", to: "/schedule" },
+      {
+        title: "My Schedule",
+        icon: "mdi-book-clock-outline",
+        to: "/teacher-schedule",
+      },
       {
         title: "History",
         icon: "mdi-clipboard-text-clock-outline",
-        to: "/history",
+        to: "/teacher-history",
       },
       { title: "My Costs", icon: "mdi-currency-usd" },
       { title: "My Account", icon: "mdi-account" },
