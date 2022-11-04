@@ -13,4 +13,5 @@ router
   .post(teacherController.submitRequisition);
 
 router.route("/history").get(teacherController.getMyHistory);
+router.route("/my-schedule").get(teacherController.getMySchedule);
 module.exports = router;

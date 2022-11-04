@@ -11,11 +11,18 @@ router.route("/").get(transportController.getAllTransports);
 router.route("/pending").get(transportController.getAllPendingRequisitions);
 router.get("/driver-schedules", transportController.seeDriverSchedules);
 
-router.route("/pending/grant").post(transportController.grantARequisition);
-router.route("/pending/reject").post(transportController.rejectARequisition);
+router
+  .route("/pending/grant")
+  .get(transportController.getAllGranted)
+  .post(transportController.grantARequisition);
+router
+  .route("/pending/reject")
+  .get(transportController.getAllRejected)
+  .post(transportController.rejectARequisition);
 
 router
   .route("/pending/:requisitionId")
   .get(transportController.getAPendingRequisition);
+router.route("/drivers/:id").get(transportController.getADriversSchedule);
 
 module.exports = router;

@@ -104,10 +104,15 @@ export default {
 
         this.requisitions.forEach((requisition) => {
           const timeAgo = new TimeAgo("en-US");
-          let date = timeAgo.format(Date.parse(requisition.created_at));
+          let date = timeAgo.format(
+            Date.parse(requisition.created_at) + 6 * 60 * 60 * 1000
+          );
           requisition.created_at = date;
 
-          requisition.selected_date = requisition.selected_date.split("T")[0];
+          var xdate = new Date(requisition.selected_date);
+          console.log(xdate.toLocaleString());
+
+          requisition.selected_date = xdate.toLocaleString().split(",")[0];
         });
       })
       .catch((err) => {

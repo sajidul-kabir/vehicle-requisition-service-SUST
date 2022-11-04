@@ -34,8 +34,8 @@
             ref="calendar"
             :now="today"
             :value="today"
-            :events="firstEvents"
-            :event-color="firstEvents.color"
+            :events="events"
+            :event-color="events.color"
             type="4day"
             v-model="focus"
             weekdays="weekday"
@@ -57,8 +57,44 @@
 </template>
 <script>
 import DriverNav from "./DriverNav.vue";
-
+import api from "@/api";
+import axios from "axios";
 export default {
+  created() {
+    const config = {
+      headers: { Authorization: `Bearer ${this.$store.getters["auth/token"]}` },
+    };
+    //console.log(this.$store.getters["auth/token"]);
+    axios
+      .get(`${api}/drivers/my-schedule`, config)
+      .then((res) => {
+        console.log(res);
+        this.events = res.data.data;
+
+        this.events.forEach((event) => {
+          var xdate = new Date(event.selected_date);
+          console.log(xdate);
+          console.log(xdate.getDate());
+          let num = xdate.getMonth() + 1;
+          let str = xdate.getFullYear() + "-" + num + "-" + xdate.getDate();
+          //console.log(Date.parse());
+          console.log(str);
+          event.name =
+            event.teacher_name + " ~ " + "Destination: " + event.destination;
+          event.start = str + " " + event.start_time;
+          event.end = str + " " + event.end_time;
+
+          // event.start =
+          //   event.selected_date.split("T")[0] + " " + event.start_time;
+          // event.end = event.selected_date.split("T")[0] + " " + event.end_time;
+          event.color = this.getRandomColor();
+          //event.selected_date = requisition.selected_date.split("T")[0];
+        });
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  },
   data: () => ({
     show: false,
     today: "2022-09-16",
@@ -69,34 +105,8 @@ export default {
       minutes: 60,
       count: 11,
     },
-
-    firstEvents: [
-      {
-        name: `Dr. Ahsan Habib ~ Destination: Ambarkhana`,
-        start: "2022-09-25 08:00",
-        end: "2022-09-25 11:00",
-        color: "indigo",
-        to: "/transport-home/335",
-      },
-      {
-        name: "Dr. Md Forhad Rabbi ~ Destination: Airport",
-        start: "2022-09-25 12:00",
-        end: "2022-09-25 15:00",
-        color: "deep-purple",
-      },
-      {
-        name: "Raihan Ullah ~ Destination: Shubidbazar",
-        start: "2022-09-26 10:00",
-        end: "2022-09-26 12:00",
-        color: "cyan",
-      },
-      {
-        name: "Asif Mohammad Samir ~ Destination: Airport",
-        start: "2022-09-27 13:00",
-        end: "2022-09-27 15:00",
-        color: "indigo",
-      },
-    ],
+    colors: ["blue", "indigo", "deep-purple", "cyan", "orange", "teal"],
+    events: [],
   }),
   mounted() {
     this.$refs.calendar.checkChange();
@@ -113,6 +123,13 @@ export default {
     },
     calendarEvent() {
       this.$router.push("/transport-home/335");
+    },
+    randomIntFromInterval(min, max) {
+      return Math.floor(Math.random() * (max - min + 1) + min);
+    },
+    getRandomColor() {
+      let target = this.randomIntFromInterval(0, 5);
+      return this.colors[target];
     },
   },
   components: {
