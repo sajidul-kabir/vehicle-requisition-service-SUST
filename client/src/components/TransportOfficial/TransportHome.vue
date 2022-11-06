@@ -1,5 +1,16 @@
 <template>
   <div style="margin-bottom: 20px">
+    <v-expand-transition>
+      <div v-if="loading">
+        <v-progress-linear indeterminate color="teal"></v-progress-linear>
+        <br />
+      </div>
+    </v-expand-transition>
+
+    <!-- <div v-if="loading">
+      <v-progress-linear indeterminate color="teal"></v-progress-linear>
+      <br />
+    </div> -->
     <transport-nav>
       <template>
         <v-toolbar-title>See Requisition List</v-toolbar-title>
@@ -48,7 +59,7 @@
         </v-card-text>
 
         <v-card-actions class="mb-2 ml-2">
-          <router-link to="/transport-home/335">
+          <router-link :to="'/transport-home/' + requisition.requisition_id">
             <v-btn outlined color="indigo" class="details">See Details</v-btn>
           </router-link>
         </v-card-actions>
@@ -99,6 +110,7 @@ export default {
       .then((res) => {
         console.log(res);
         this.requisitions = res.data.data;
+        this.loading = false;
 
         TimeAgo.addDefaultLocale(en);
 
@@ -110,7 +122,7 @@ export default {
           requisition.created_at = date;
 
           var xdate = new Date(requisition.selected_date);
-          console.log(xdate.toLocaleString());
+          //console.log(xdate.toLocaleString());
 
           requisition.selected_date = xdate.toLocaleString().split(",")[0];
         });
@@ -125,7 +137,8 @@ export default {
     show: false,
     requisitions: [],
     search: "",
-
+    loading: true,
+    expand: false,
     headers: [
       {
         text: "Requisition ID",
@@ -149,8 +162,8 @@ export default {
     tabBtn() {
       this.view = "tab";
     },
-    rowClick() {
-      this.$router.push("/transport-home/335");
+    rowClick(e) {
+      this.$router.push("/transport-home/" + e.requisition_id);
     },
   },
   computed: {

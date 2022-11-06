@@ -130,3 +130,49 @@ exports.getADriversSchedule = catchAsync(async (req, res, next) => {
     data: users[0],
   });
 });
+
+exports.getAllAvailableDrivers = catchAsync(async (req, res, next) => {
+  let { selected_date, start_time, end_time } = req.body;
+
+  if (!selected_date || !start_time || !end_time) {
+    return next(new AppError("provide the required fields", 400));
+  }
+  function addMinutes(time, minsToAdd) {
+    function D(J) {
+      return (J < 10 ? "0" : "") + J;
+    }
+    var piece = time.split(":");
+    var mins = piece[0] * 60 + +piece[1] + +minsToAdd;
+
+    return D(((mins % (24 * 60)) / 60) | 0) + ":" + D(mins % 60);
+  }
+
+  function subMinutes(time, minsToAdd) {
+    function D(J) {
+      return (J < 10 ? "0" : "") + J;
+    }
+    var piece = time.split(":");
+    var mins = piece[0] * 60 + +piece[1] + -minsToAdd;
+
+    return D(((mins % (24 * 60)) / 60) | 0) + ":" + D(mins % 60);
+  }
+
+  let end_time2 = subMinutes(end_time, "1");
+  let start_time2 = addMinutes(start_time, "1");
+
+  //console.log(start_time, end_time);
+
+  const query = `SELECT drivers.fullname,drivers.phone,drivers.vehicle_no from drivers INNER join granted_requisitions on drivers.id=granted_requisitions.driver_id INNER join requisitions on granted_requisitions.requisition_id=requisitions.id WHERE requisitions.selected_date=? AND (requisitions.start_time  BETWEEN ? AND ? || requisitions.end_time BETWEEN  ? AND ?)`;
+  const availableDrivers = await pool.execute(query, [
+    selected_date,
+    start_time,
+    end_time2,
+    start_time2,
+    end_time,
+  ]);
+  res.status(200).json({
+    message: "successful",
+    total: availableDrivers[0].length,
+    data: availableDrivers[0],
+  });
+});

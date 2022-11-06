@@ -1,5 +1,11 @@
 <template>
   <div style="margin-bottom: 20px">
+    <v-expand-transition>
+      <div v-if="loading">
+        <v-progress-linear indeterminate color="teal"></v-progress-linear>
+        <br />
+      </div>
+    </v-expand-transition>
     <teacher-nav>
       <template>
         <v-toolbar-title>My Schedule</v-toolbar-title>
@@ -75,6 +81,7 @@ export default {
     axios
       .get(`${api}/teachers/my-schedule`, config)
       .then((res) => {
+        this.loading = false;
         console.log(res);
         this.requisitions = res.data.data;
 
@@ -106,6 +113,7 @@ export default {
     return {
       requisitions: [],
       name: "Timer",
+      loading: true,
     };
   },
   methods: {

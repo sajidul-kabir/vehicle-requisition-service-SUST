@@ -19,6 +19,10 @@ router
   .route("/pending/reject")
   .get(transportController.getAllRejected)
   .post(transportController.rejectARequisition);
+router.post(
+  "/driver-schedules/available",
+  transportController.getAllAvailableDrivers
+);
 
 router
   .route("/pending/:requisitionId")

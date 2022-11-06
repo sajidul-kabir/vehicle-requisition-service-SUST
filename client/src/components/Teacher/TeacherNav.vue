@@ -8,7 +8,7 @@
           </v-list-item-avatar>
 
           <v-list-item-content>
-            <v-list-item-title>Dr. Ahsan Habib</v-list-item-title>
+            <v-list-item-title>{{ username }}</v-list-item-title>
             <v-list-item-subtitle>Logged In</v-list-item-subtitle>
           </v-list-item-content>
         </v-list-item>
@@ -53,10 +53,15 @@
 
 <script>
 export default {
+  props: ["username"],
   data: () => ({
     drawer: true,
     items: [
-      { title: "Submit A Requisition", icon: "mdi-bus-clock", to: "/" },
+      {
+        title: "Submit A Requisition",
+        icon: "mdi-bus-clock",
+        to: "/teacher-home",
+      },
       {
         title: "My Schedule",
         icon: "mdi-book-clock-outline",

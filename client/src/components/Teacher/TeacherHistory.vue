@@ -1,5 +1,11 @@
 <template>
   <div style="margin-bottom: 20px">
+    <v-expand-transition>
+      <div v-if="loading">
+        <v-progress-linear indeterminate color="teal"></v-progress-linear>
+        <br />
+      </div>
+    </v-expand-transition>
     <teacher-nav>
       <template>
         <v-toolbar-title>See History</v-toolbar-title>
@@ -78,6 +84,7 @@ export default {
     axios
       .get(`${api}/teachers/history`, config)
       .then((res) => {
+        this.loading = false;
         console.log(res);
         this.requisitions = res.data.data;
 
@@ -103,6 +110,7 @@ export default {
   data() {
     return {
       requisitions: [],
+      loading: true,
     };
   },
   components: {

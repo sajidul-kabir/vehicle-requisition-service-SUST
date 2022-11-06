@@ -1,5 +1,11 @@
 <template>
   <div style="margin-bottom: 20px">
+    <v-expand-transition>
+      <div v-if="loading">
+        <v-progress-linear indeterminate color="teal"></v-progress-linear>
+        <br />
+      </div>
+    </v-expand-transition>
     <transport-nav>
       <template>
         <v-toolbar-title>See Granted Requisitons</v-toolbar-title>
@@ -96,6 +102,7 @@ export default {
     axios
       .get(`${api}/transport/pending/grant`, config)
       .then((res) => {
+        this.loading = false;
         console.log(res);
         this.requisitions = res.data.data;
 
@@ -123,7 +130,7 @@ export default {
     show: false,
     requisitions: [],
     search: "",
-
+    loading: true,
     headers: [
       {
         text: "Requisition ID",

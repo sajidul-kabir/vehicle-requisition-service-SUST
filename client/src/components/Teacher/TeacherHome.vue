@@ -1,7 +1,13 @@
 <template>
   <div>
     <div>
-      <TeacherNav>
+      <v-expand-transition>
+        <div v-if="loading">
+          <v-progress-linear indeterminate color="teal"></v-progress-linear>
+          <br />
+        </div>
+      </v-expand-transition>
+      <TeacherNav :username="username">
         <template>
           <v-toolbar-title
             >Welcome to Vehicle Requisition Service</v-toolbar-title
@@ -92,7 +98,12 @@
                       v-on="on"
                     ></v-text-field>
                   </template>
-                  <v-date-picker v-model="date" no-title scrollable>
+                  <v-date-picker
+                    v-model="date"
+                    no-title
+                    scrollable
+                    :min="getCurrDate()"
+                  >
                     <v-spacer></v-spacer>
                     <v-btn text color="primary" @click="menu = false">
                       Cancel
@@ -184,12 +195,12 @@
               </v-col>
             </v-row>
 
-            <v-radio-group row>
-              <v-radio label="Personal need" value="radio-1"></v-radio>
+            <v-radio-group row v-model="need">
+              <v-radio label="Personal need" value="personal"></v-radio>
               <v-radio
                 class="form-radio"
                 label="Official need"
-                value="radio-2"
+                value="official"
               ></v-radio>
             </v-radio-group>
 
@@ -204,10 +215,40 @@
             </v-row>
 
             <div class="my-2 mt-6">
-              <v-btn color="teal lighten-1" dark x-large @click="submit">
+              <v-btn
+                style="margin-bottom: 35px"
+                color="teal lighten-1"
+                :dark="check"
+                :x-large="check"
+                @click="openDialog"
+                :disabled="!check"
+              >
                 Submit
               </v-btn>
             </div>
+            <v-row justify="center">
+              <v-dialog v-model="dialog" persistent max-width="300">
+                <v-card>
+                  <v-card-title class="text-h5">
+                    Are you sure you want submit this requisition?
+                  </v-card-title>
+                  <v-card-actions>
+                    <v-spacer></v-spacer>
+                    <v-btn
+                      outlined
+                      color="red darken-1"
+                      text
+                      @click="dialog = false"
+                    >
+                      NO
+                    </v-btn>
+                    <v-btn outlined color="green darken-2" text @click="submit">
+                      YES
+                    </v-btn>
+                  </v-card-actions>
+                </v-card>
+              </v-dialog>
+            </v-row>
           </div>
         </v-container>
       </v-form>
@@ -216,33 +257,70 @@
 </template>
 
 <script>
+import axios from "axios";
+import api from "@/api";
 import TeacherNav from "./TeacherNav.vue";
 export default {
+  created() {
+    const user = {
+      username: this.$store.getters["auth/user"],
+      role: this.$store.getters["auth/role"],
+    };
+    const config = {
+      headers: { Authorization: `Bearer ${this.$store.getters["auth/token"]}` },
+    };
+    //console.log(user);
+    axios
+      .post(`${api}/users/me`, user, config)
+      .then((res) => {
+        this.loading = false;
+
+        //console.log(res.data.data);
+        this.name = res.data.data[0].fullname;
+        this.username = res.data.data[0].username;
+        this.phone = res.data.data[0].phone;
+        this.users_name = res.data.data[0].fullname;
+        this.users_phone = res.data.data[0].phone;
+        this.designation =
+          res.data.data[0].designation + ", " + res.data.data[0].department;
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  },
+
   name: "TeacherHome",
   data: () => ({
+    username: "",
     valid: false,
-    name: "Dr. Ahsan Habib",
-    phone: "017xxxxxxxx",
-    designation: "Assistant Professor, SWE",
-    users_name: "Dr. Ahsan Habib",
-    users_phone: "017xxxxxxxx",
+    name: "",
+    phone: "",
+    designation: "",
+    users_name: "",
+    users_phone: "",
     nameRules: [(v) => !!v || "Name is required"],
+    dateRules: [(v) => !!v || "Date is required"],
+    timeRules: [(v) => !!v || "time is required"],
+    emptyRules: [(v) => !!v || "this field must not be empty"],
     date: "",
     start_time: "",
     end_time: "",
     destination: "",
     reason: "",
+    need: null,
 
     submitted: false,
+    loading: true,
     menu: false,
     modal: false,
     modal2: false,
     menu2: false,
     menu3: false,
     modal3: false,
+    dialog: false,
     phoneRules: [
       (v) => !!v || "Phone is required",
-      (v) => v.length === 11 || "Phone number must be less than 11 characters",
+      (v) => v.length === 11 || "Phone number must be 11 characters",
     ],
   }),
   methods: {
@@ -261,11 +339,72 @@ export default {
       num = parseInt(num);
       return [num + 1, num + 2, num + 3];
     },
+    openDialog() {
+      this.dialog = true;
+    },
+    getCurrDate() {
+      var today = new Date();
+      var dd = String(today.getDate()).padStart(2, "0");
+      var mm = String(today.getMonth() + 1).padStart(2, "0"); //January is 0!
+      var yyyy = today.getFullYear();
+
+      today = yyyy + "-" + mm + "-" + dd;
+      return today;
+    },
     submit() {
+      this.loading = true;
       this.submitted = true;
-      console.log(this.date, this.start_time, this.end_time);
+      this.dialog = false;
+      // console.log(this.date, this.start_time, this.end_time, this.need);
+      const config = {
+        headers: {
+          Authorization: `Bearer ${this.$store.getters["auth/token"]}`,
+        },
+      };
+      const teacherObj = {
+        start_time: this.start_time,
+        end_time: this.end_time,
+        selected_date: this.date,
+        destination: this.destination,
+        need: this.need,
+        reason_for_vehicle: this.reason,
+      };
+
+      axios
+        .post(`${api}/teachers`, teacherObj, config)
+        .then(() => {
+          this.loading = false;
+          (this.date = ""),
+            (this.start_time = ""),
+            (this.end_time = ""),
+            (this.destination = ""),
+            (this.reason = ""),
+            (this.need = null),
+            window.scrollTo(0, 0);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
     },
   },
+  computed: {
+    check() {
+      if (
+        this.name &&
+        this.phone &&
+        this.designation &&
+        this.date &&
+        this.start_time &&
+        this.end_time &&
+        this.destination &&
+        this.reason &&
+        this.need
+      )
+        return true;
+      else return false;
+    },
+  },
+
   components: { TeacherNav },
 };
 </script>

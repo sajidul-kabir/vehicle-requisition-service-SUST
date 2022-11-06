@@ -98,14 +98,10 @@ const routes = [
     },
   },
   {
-    path: "/transport-home/335",
+    path: "/transport-home/:requisition_id",
     name: "Details",
     component: RequisitionDetails,
-    beforeEnter: (to, from, next) => {
-      checkAuth(next);
-      checkTransport(next);
-      next();
-    },
+    props: true,
   },
   {
     path: "/driver-home",

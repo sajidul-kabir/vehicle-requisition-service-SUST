@@ -1,5 +1,11 @@
 <template>
   <div style="margin-bottom: 20px">
+    <v-expand-transition>
+      <div v-if="loading">
+        <v-progress-linear indeterminate color="teal"></v-progress-linear>
+        <br />
+      </div>
+    </v-expand-transition>
     <transport-nav>
       <template>
         <v-toolbar-title>See Drivers' Schedule</v-toolbar-title>
@@ -81,19 +87,6 @@
                 </div>
               </template>
             </v-calendar>
-            <!-- <v-calendar
-            v-else
-            ref="calendar"
-            :now="today"
-            :value="today"
-            :events="secondEvents"
-            :color="secondEvents.color"
-            type="4day"
-            v-model="focus"
-            :first-interval="intervals.first"
-            :interval-minutes="intervals.minutes"
-            :interval-count="intervals.count"
-          ></v-calendar> -->
           </v-sheet>
         </div>
       </v-col>
@@ -117,26 +110,6 @@ export default {
       .then((res) => {
         console.log(res);
         this.drivers = res.data.data;
-
-        // this.events.forEach((event) => {
-        //   var xdate = new Date(event.selected_date);
-        //   console.log(xdate);
-        //   console.log(xdate.getDate());
-        //   let num = xdate.getMonth() + 1;
-        //   let str = xdate.getFullYear() + "-" + num + "-" + xdate.getDate();
-        //   //console.log(Date.parse());
-        //   console.log(str);
-        //   event.name =
-        //     event.teacher_name + " ~ " + "Destination: " + event.destination;
-        //   event.start = str + " " + event.start_time;
-        //   event.end = str + " " + event.end_time;
-
-        //   // event.start =
-        //   //   event.selected_date.split("T")[0] + " " + event.start_time;
-        //   // event.end = event.selected_date.split("T")[0] + " " + event.end_time;
-        //   event.color = this.getRandomColor();
-        //   //event.selected_date = requisition.selected_date.split("T")[0];
-        // });
       })
       .catch((err) => {
         console.log(err);
@@ -145,6 +118,7 @@ export default {
     axios
       .get(`${api}/transport/drivers/1`, config)
       .then((res) => {
+        this.loading = false;
         this.events = res.data.data;
         this.events.forEach((event) => {
           var xdate = new Date(event.selected_date);
@@ -164,6 +138,7 @@ export default {
   data: () => ({
     today: "2022-09-16",
     focus: "",
+    loading: true,
 
     intervals: {
       first: 7,
@@ -176,6 +151,7 @@ export default {
     selectedDriver: "Monir Ahmed",
 
     select(driver, id) {
+      this.loading = true;
       this.selectedDriver = driver;
       const config = {
         headers: {
@@ -185,6 +161,7 @@ export default {
       axios
         .get(`${api}/transport/drivers/${id}`, config)
         .then((res) => {
+          this.loading = false;
           this.events = res.data.data;
           this.events.forEach((event) => {
             var xdate = new Date(event.selected_date);
