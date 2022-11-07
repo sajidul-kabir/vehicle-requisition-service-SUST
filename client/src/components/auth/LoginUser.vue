@@ -1,45 +1,60 @@
 <template>
-  <form action="sumbit" @submit.prevent="loginUser">
-    <h2 v-if="role === 'teacher'">Login as a teacher</h2>
-    <h2 v-if="role === 'transport'">Login as a Transport Official</h2>
-    <h2 v-if="role === 'driver'">Login as a Driver</h2>
-    <input type="text" placeholder="username" v-model="user.username" />
-    <input type="password" placeholder="password" v-model="user.password" />
-    <div class="">
-      <h2>Specify a Role</h2>
-      <div>
-        <input
-          id="teacher"
-          name="role"
-          type="radio"
-          value="teacher"
-          v-model="role"
-        />
-        <label for="teacher">Teacher/Official</label>
+<div class=" bg-slate-100 h-screen flex justify-center items-center w-screen">
+    <form class="bg-white w-fit p-10 rounded-2xl" action="sumbit" @submit.prevent="loginUser">
+      <h2 class="font-bold text-2xl" v-if="role === 'teacher'">Login as a Teacher</h2>
+      <h2 v-if="role === 'transport'">Login as a Transport Official</h2>
+      <h2 v-if="role === 'driver'">Login as a Driver</h2>
+      <div class=" justify-start  flex flex-col gap-3 py-5">
+        <div>
+            <label for="username" class="block text-xs font-medium text-gray-700">
+              Username
+            </label>
+            
+            <input type="text" v-model="user.username" placeholder="john@rhcp.com"
+              class="mt-1 w-full rounded-md border-gray-200 shadow-sm sm:text-sm" />
+        </div>
+        
+        <div>
+          <label for="password" class="block text-xs font-medium text-gray-700">
+            Password
+          </label>
+        
+          <input type="password" v-model="user.password" placeholder="Type your password"
+            class="mt-1 w-full rounded-md border-gray-200 shadow-sm sm:text-sm" />
+        </div>
       </div>
-      <div>
-        <input
-          id="transport"
-          name="role"
-          type="radio"
-          value="transport"
-          v-model="role"
-        />
-        <label for="transport">Transport Section</label>
+      <div class="pb-5 flex flex-col gap-2">
+        <h2 >Specify a Role</h2>
+        <div class="flex flex-row flex-wrap gap-8">
+            <div class="flex items-center mr-4">
+              <input id="teacher" name="role" type="radio" value="teacher" v-model="role"
+                class="w-4 h-4 text-green-600 bg-gray-100 border-gray-700 ring-gray-800 focus:ring-green-500 focus:ring-2">
+              <label for="teacher" class="ml-2 text-sm font-medium dark:text-gray-900">Teacher/Official</label>
+            </div>
+            <div class="flex items-center mr-4">
+              <input id="transport" name="role" type="radio" value="transport" v-model="role" 
+                class="w-4 h-4 text-green-600 bg-gray-100 border-gray-300 focus:ring-green-500 focus:ring-2">
+              <label  for="transport" class="ml-2 text-sm font-medium text-gray-900 ">Transport Section</label>
+            </div>
+
+            <div class="flex items-center mr-4">
+              <input id="driver" name="role" type="radio" value="driver" v-model="role" 
+                class="w-4 h-4 text-green-600 bg-gray-100 border-gray-300 focus:ring-green-500 focus:ring-2">
+              <label for="transport" class="ml-2 text-sm font-medium text-gray-900 ">Driver</label>
+            </div>
+          
+        </div>
       </div>
-      <div>
-        <input
-          id="driver"
-          name="role"
-          type="radio"
-          value="driver"
-          v-model="role"
-        />
-        <label for="driver">Driver</label>
-      </div>
-    </div>
-    <button>SUBMIT</button>
-  </form>
+      <button class="group relative inline-block text-sm font-medium text-green-600 focus:outline-none focus:ring active:text-green-500">
+        <span
+          class="absolute inset-0 translate-x-0.5 translate-y-0.5 bg-green-600 transition-transform group-hover:translate-y-0 group-hover:translate-x-0"></span>
+      
+        <span class="relative block border border-current bg-white px-5 py-2">
+          Login
+        </span>
+      </button>
+    </form>
+</div>
 </template>
 
 <script>
