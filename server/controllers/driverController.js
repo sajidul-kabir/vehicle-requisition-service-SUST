@@ -4,7 +4,7 @@ const catchAsync = require("../utils/catchAsync");
 
 // Selectiong All teachers
 exports.getAllDrivers = catchAsync(async (req, res, next) => {
-  const query = "SELECT * FROM drivers";
+  const query = "SELECT * FROM drivers order by drivers.id";
   const users = await pool.execute(query);
   res.status(200).json({
     message: "successful",

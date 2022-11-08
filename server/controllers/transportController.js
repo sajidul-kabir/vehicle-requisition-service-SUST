@@ -162,7 +162,7 @@ exports.getAllAvailableDrivers = catchAsync(async (req, res, next) => {
 
   //console.log(start_time, end_time);
 
-  const query = `SELECT drivers.fullname,drivers.phone,drivers.vehicle_no from drivers INNER join granted_requisitions on drivers.id=granted_requisitions.driver_id INNER join requisitions on granted_requisitions.requisition_id=requisitions.id WHERE requisitions.selected_date=? AND (requisitions.start_time  BETWEEN ? AND ? || requisitions.end_time BETWEEN  ? AND ?)`;
+  const query = `SELECT drivers.id,drivers.fullname,drivers.phone,drivers.vehicle_no from drivers INNER join granted_requisitions on drivers.id=granted_requisitions.driver_id INNER join requisitions on granted_requisitions.requisition_id=requisitions.id WHERE requisitions.selected_date=? AND (requisitions.start_time  BETWEEN ? AND ? || requisitions.end_time  BETWEEN  ? AND ?) group by drivers.id`;
   const availableDrivers = await pool.execute(query, [
     selected_date,
     start_time,
