@@ -1,48 +1,44 @@
 <template>
 <div class=" bg-slate-100 h-screen flex justify-center items-center w-screen">
     <form class="bg-white w-fit p-10 rounded-2xl" action="sumbit" @submit.prevent="loginUser">
-      <h2 class="font-bold text-2xl" v-if="role === 'teacher'">Login as a Teacher</h2>
-      <h2 v-if="role === 'transport'">Login as a Transport Official</h2>
-      <h2 v-if="role === 'driver'">Login as a Driver</h2>
-      <div class=" justify-start  flex flex-col gap-3 py-5">
-        <div>
-            <label for="username" class="block text-xs font-medium text-gray-700">
-              Username
-            </label>
-            
-            <input type="text" v-model="user.username" placeholder="john@rhcp.com"
-              class="mt-1 w-full rounded-md border-gray-200 shadow-sm sm:text-sm" />
-        </div>
-        
-        <div>
-          <label for="password" class="block text-xs font-medium text-gray-700">
-            Password
-          </label>
-        
-          <input type="password" v-model="user.password" placeholder="Type your password"
-            class="mt-1 w-full rounded-md border-gray-200 shadow-sm sm:text-sm" />
-        </div>
+      <div class="inline-flex items-center gap-4 pb-12">
+        <img src="../../assets/Shahjalal_University_of_Science_and_Technology_logo.png" width="45px" alt="sust_logo.png" />
+        <h2 class="font-bold text-2xl" v-if="role === 'teacher'">Login as a Teacher</h2>
+        <h2 v-if="role === 'transport'">Login as a Transport Official</h2>
+        <h2 v-if="role === 'driver'">Login as a Driver</h2>
+      </div>
+      <div class="mb-4">
+        <label class="block text-gray-700 text-sm font-bold mb-2" for="username">
+          Username
+        </label>
+        <input
+          class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-teal-100 fo focus:shadow-outline"
+          id="username" v-model="user.username" type="text" placeholder="Username">
+      </div>
+      <div class="mb-6">
+        <label class="block text-gray-700 text-sm font-bold mb-2" for="password">
+          Password
+        </label>
+        <input
+          class="shadow appearance-none border border-red-500 rounded w-full py-2 px-3 text-gray-700 mb-3 leading-tight focus:outline-none focus:shadow-outline"
+          id="password" v-model="user.password" type="password" placeholder="******************">
+        <!-- <p class="text-red-500 text-xs italic">Please choose a password.</p> -->
       </div>
       <div class="pb-5 flex flex-col gap-2">
-        <h2 >Specify a Role</h2>
-        <div class="flex flex-row flex-wrap gap-8">
-            <div class="flex items-center mr-4">
-              <input id="teacher" name="role" type="radio" value="teacher" v-model="role"
-                class="w-4 h-4 text-green-600 bg-gray-100 border-gray-700 ring-gray-800 focus:ring-green-500 focus:ring-2">
-              <label for="teacher" class="ml-2 text-sm font-medium dark:text-gray-900">Teacher/Official</label>
-            </div>
-            <div class="flex items-center mr-4">
-              <input id="transport" name="role" type="radio" value="transport" v-model="role" 
-                class="w-4 h-4 text-green-600 bg-gray-100 border-gray-300 focus:ring-green-500 focus:ring-2">
-              <label  for="transport" class="ml-2 text-sm font-medium text-gray-900 ">Transport Section</label>
-            </div>
-
-            <div class="flex items-center mr-4">
-              <input id="driver" name="role" type="radio" value="driver" v-model="role" 
-                class="w-4 h-4 text-green-600 bg-gray-100 border-gray-300 focus:ring-green-500 focus:ring-2">
-              <label for="transport" class="ml-2 text-sm font-medium text-gray-900 ">Driver</label>
-            </div>
-          
+        <h4 >Specify a Role</h4>
+        <div class="flex flex-row flex-wrap gap-4">
+          <div>
+            <input class=" ring-yellow-600" id="teacher" name="role" type="radio" value="teacher" v-model="role">
+            <label for="teacher">Teacher/Official</label><br>
+          </div>
+          <div>
+            <input id="transport" name="role" type="radio" value="transport" v-model="role">
+            <label for="transport">Transport Section</label><br>
+          </div>
+          <div>
+            <input id="driver" name="role" type="radio" value="driver" v-model="role">
+            <label for="transport">Driver</label><br>
+          </div>
         </div>
       </div>
       <button class="group relative inline-block text-sm font-medium text-green-600 focus:outline-none focus:ring active:text-green-500">
