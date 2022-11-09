@@ -27,15 +27,15 @@
       <div class="pb-5 flex flex-col gap-2">
         <h4 >Specify a Role</h4>
         <div class="flex flex-row flex-wrap gap-4">
-          <div>
+          <div class="flex flex-row items-center gap-1">
             <input class=" ring-yellow-600" id="teacher" name="role" type="radio" value="teacher" v-model="role">
             <label for="teacher">Teacher/Official</label><br>
           </div>
-          <div>
+          <div class="flex flex-row items-center gap-1">
             <input id="transport" name="role" type="radio" value="transport" v-model="role">
             <label for="transport">Transport Section</label><br>
           </div>
-          <div>
+          <div class="flex flex-row items-center gap-1">
             <input id="driver" name="role" type="radio" value="driver" v-model="role">
             <label for="transport">Driver</label><br>
           </div>
