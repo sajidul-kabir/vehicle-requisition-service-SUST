@@ -12,7 +12,7 @@
           Username
         </label>
         <input
-          class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-teal-100 fo focus:shadow-outline"
+          class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-teal-100 focus:outline-1 focus:shadow-outline"
           id="username" v-model="user.username" type="text" placeholder="Username">
       </div>
       <div class="mb-6">
@@ -20,7 +20,7 @@
           Password
         </label>
         <input
-          class="shadow appearance-none border border-red-500 rounded w-full py-2 px-3 text-gray-700 mb-3 leading-tight focus:outline-none focus:shadow-outline"
+          class="shadow appearance-none border border-red-500 rounded w-full py-2 px-3 text-gray-700 mb-3 leading-tight focus:outline-teal-100 focus:outline-1 focus:shadow-outline"
           id="password" v-model="user.password" type="password" placeholder="******************">
         <!-- <p class="text-red-500 text-xs italic">Please choose a password.</p> -->
       </div>
