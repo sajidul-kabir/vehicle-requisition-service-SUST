@@ -101,6 +101,20 @@ exports.getAllGranted = catchAsync(async (req, res, next) => {
   });
 });
 
+exports.getAGranted = catchAsync(async (req, res, next) => {
+  const id = req.params.id;
+  if (!id) {
+    return next(new AppError("provide the required fields", 400));
+  }
+  const query = `SELECT requisitions.need,requisitions.id,teachers.fullname as teacher_name,teachers.department,teachers.designation, teachers.phone,requisitions.start_time,requisitions.end_time,requisitions.selected_date,requisitions.destination,requisitions.reason_for_vehicle, drivers.fullname as driver_name, drivers.phone as driver_phone, drivers.vehicle_no,granted_requisitions.status,granted_requisitions.created_at FROM drivers INNER JOIN granted_requisitions ON drivers.id=granted_requisitions.driver_id INNER JOIN requisitions on granted_requisitions.requisition_id=requisitions.id INNER join teachers on requisitions.teacher_id=teachers.id WHERE granted_requisitions.status='granted' AND granted_requisitions.requisition_id=?`;
+  const users = await pool.execute(query, [id]);
+  res.status(200).json({
+    message: "successful",
+    total: users[0].length,
+    data: users[0],
+  });
+});
+
 exports.getAllRejected = catchAsync(async (req, res, next) => {
   const query = `select username,fullname,requisitions.id as requisition_id,start_time,end_time,selected_date,destination,reason_for_vehicle,status,created_at,need from requisitions inner join teachers on requisitions.teacher_id=teachers.id where requisitions.status='rejected' order by created_at desc`;
   const users = await pool.execute(query);
@@ -108,6 +122,20 @@ exports.getAllRejected = catchAsync(async (req, res, next) => {
     message: "successful",
     total: users[0].length,
     data: users[0],
+  });
+});
+
+exports.getARejected = catchAsync(async (req, res, next) => {
+  const id = req.params.id;
+  if (!id) {
+    return next(new AppError("provide the required fields", 400));
+  }
+  const query =
+    "select username,fullname,phone,department,requisitions.id as requisition_id,designation,start_time,end_time,selected_date,destination,reason_for_vehicle,status,created_at,need from requisitions inner join teachers on requisitions.teacher_id=teachers.id where requisitions.id=? AND requisitions.status='rejected'";
+  const pending_requisition = await pool.execute(query, [id]);
+  res.status(200).json({
+    message: "successful",
+    data: pending_requisition[0],
   });
 });
 
@@ -122,7 +150,7 @@ exports.seeDriverSchedules = catchAsync(async (req, res, next) => {
 });
 exports.getADriversSchedule = catchAsync(async (req, res, next) => {
   const id = req.params.id;
-  const query = `SELECT teachers.fullname as teacher_name,teachers.phone,requisitions.start_time,requisitions.end_time,requisitions.selected_date,requisitions.destination,drivers.fullname FROM drivers INNER JOIN granted_requisitions ON drivers.id=granted_requisitions.driver_id INNER JOIN requisitions on granted_requisitions.requisition_id=requisitions.id INNER join teachers on requisitions.teacher_id=teachers.id WHERE drivers.id=${id} && granted_requisitions.status='granted'`;
+  const query = `SELECT teachers.fullname as teacher_name,teachers.phone,requisitions.id,requisitions.start_time,requisitions.end_time,requisitions.selected_date,requisitions.destination,drivers.fullname FROM drivers INNER JOIN granted_requisitions ON drivers.id=granted_requisitions.driver_id INNER JOIN requisitions on granted_requisitions.requisition_id=requisitions.id INNER join teachers on requisitions.teacher_id=teachers.id WHERE drivers.id=${id} && granted_requisitions.status='granted'`;
   const users = await pool.execute(query);
   res.status(200).json({
     message: "successful",

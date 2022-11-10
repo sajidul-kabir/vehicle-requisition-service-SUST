@@ -15,6 +15,9 @@ router
   .route("/pending/grant")
   .get(transportController.getAllGranted)
   .post(transportController.grantARequisition);
+
+router.route("/pending/grant/:id").get(transportController.getAGranted);
+router.route("/pending/reject/:id").get(transportController.getARejected);
 router
   .route("/pending/reject")
   .get(transportController.getAllRejected)
@@ -27,6 +30,7 @@ router.post(
 router
   .route("/pending/:requisitionId")
   .get(transportController.getAPendingRequisition);
+//router.route("/granted/:id").get(transportController.getAGranted);
 router.route("/drivers/:id").get(transportController.getADriversSchedule);
 
 module.exports = router;

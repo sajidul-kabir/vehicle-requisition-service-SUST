@@ -6,7 +6,7 @@
         <br />
       </div>
     </v-expand-transition>
-    <teacher-nav>
+    <teacher-nav :username="username">
       <template>
         <v-toolbar-title>My Schedule</v-toolbar-title>
       </template>
@@ -21,7 +21,13 @@
       outlined
     >
       <v-card-text class="ml-2">
-        <div class="mb-2">Requisition Overview</div>
+        <div class="text-flex">
+          <div class="mb-2">Requisition Overview</div>
+          <div style="margin-right: 25px">
+            Requisition ID #{{ requisition.id }}
+          </div>
+        </div>
+
         <p class="text-h5 text--primary">
           <template>
             <vue-countdown-timer
@@ -56,7 +62,12 @@
       <v-card-actions class="mb-2 ml-2">
         <v-btn outlined color="red darken-1"> Cancel</v-btn>
         <div class="status">Status: Granted</div>
-        <v-btn outlined color="indigo" class="details">See Details</v-btn>
+        <router-link
+          class="details"
+          :to="'/transport-home/granted/' + requisition.id"
+        >
+          <v-btn outlined color="indigo" class="details">See Details</v-btn>
+        </router-link>
       </v-card-actions>
     </v-card>
   </div>
@@ -78,6 +89,7 @@ export default {
       headers: { Authorization: `Bearer ${this.$store.getters["auth/token"]}` },
     };
     //console.log(this.$store.getters["auth/token"]);
+    this.username = this.$store.getters["auth/user"];
     axios
       .get(`${api}/teachers/my-schedule`, config)
       .then((res) => {
@@ -114,6 +126,7 @@ export default {
       requisitions: [],
       name: "Timer",
       loading: true,
+      username: "",
     };
   },
   methods: {
@@ -131,6 +144,14 @@ export default {
 </script>
 
 <style scoped>
+a {
+  text-decoration: none;
+}
+.text-flex {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 15px;
+}
 .status {
   border: 1px solid;
   padding: 5px 15px;

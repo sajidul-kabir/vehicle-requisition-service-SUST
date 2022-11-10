@@ -6,7 +6,7 @@
         <br />
       </div>
     </v-expand-transition>
-    <teacher-nav>
+    <teacher-nav :username="username">
       <template>
         <v-toolbar-title>See History</v-toolbar-title>
       </template>
@@ -21,7 +21,9 @@
       <v-card-text class="ml-2">
         <div class="text-flex">
           <div class="mb-2">{{ requisition.created_at }}</div>
-          <div>Requisition ID #{{ requisition.requisition_id }}</div>
+          <div style="margin-right: 25px">
+            Requisition ID #{{ requisition.requisition_id }}
+          </div>
         </div>
 
         <p class="text-h5 text--primary">You Have Submitted a Requisition</p>
@@ -38,6 +40,7 @@
           :class="requisition.status === 'rejected' ? 'cancel' : ''"
           outlined
           color="red darken-1"
+          @click="openDialog(requisition.requisition_id)"
         >
           Cancel</v-btn
         >
@@ -63,9 +66,48 @@
         >
           Status: {{ requisition.status }}
         </div>
-        <v-btn outlined color="indigo" class="details">See Details</v-btn>
+        <router-link
+          v-if="requisition.status === 'pending'"
+          class="details"
+          :to="'/transport-home/' + requisition.requisition_id"
+        >
+          <v-btn outlined color="indigo" class="details">See Details</v-btn>
+        </router-link>
+
+        <router-link
+          v-if="requisition.status === 'granted'"
+          class="details"
+          :to="'/transport-home/granted/' + requisition.requisition_id"
+        >
+          <v-btn outlined color="indigo" class="details">See Details</v-btn>
+        </router-link>
+        <router-link
+          v-if="requisition.status === 'rejected'"
+          class="details"
+          :to="'/transport-home/rejected/' + requisition.requisition_id"
+        >
+          <v-btn outlined color="indigo" class="details">See Details</v-btn>
+        </router-link>
       </v-card-actions>
     </v-card>
+    <v-row justify="center">
+      <v-dialog v-model="dialog" persistent max-width="400">
+        <v-card>
+          <v-card-title class="text-h5">
+            Are you sure you want to cancel this requisition?
+          </v-card-title>
+          <v-card-actions>
+            <v-spacer></v-spacer>
+            <v-btn outlined color="red darken-1" text @click="dialog = false">
+              NO
+            </v-btn>
+            <v-btn outlined color="green darken-2" text @click="cancel()">
+              YES
+            </v-btn>
+          </v-card-actions>
+        </v-card>
+      </v-dialog>
+    </v-row>
   </div>
 </template>
 
@@ -80,7 +122,7 @@ export default {
     const config = {
       headers: { Authorization: `Bearer ${this.$store.getters["auth/token"]}` },
     };
-    //console.log(this.$store.getters["auth/token"]);
+    this.username = this.$store.getters["auth/user"];
     axios
       .get(`${api}/teachers/history`, config)
       .then((res) => {
@@ -110,8 +152,42 @@ export default {
   data() {
     return {
       requisitions: [],
+      requisition_to_be_deleted: null,
       loading: true,
+      username: "",
+      dialog: false,
     };
+  },
+  methods: {
+    cancel() {
+      const config = {
+        headers: {
+          Authorization: `Bearer ${this.$store.getters["auth/token"]}`,
+        },
+      };
+      this.dialog = false;
+      this.loading = true;
+      console.log(this.requisition_to_be_deleted);
+      axios
+        .delete(
+          `${api}/teachers/cancel/${this.requisition_to_be_deleted}`,
+          config
+        )
+        .then((res) => {
+          console.log(res);
+          this.loading = false;
+          this.requisition_to_be_deleted = null;
+          window.scrollTo(0, 0);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    },
+    openDialog(id) {
+      this.dialog = true;
+      this.requisition_to_be_deleted = id;
+      console.log(id);
+    },
   },
   components: {
     TeacherNav,
@@ -119,6 +195,9 @@ export default {
 };
 </script>
 <style scoped>
+a {
+  text-decoration: none;
+}
 .text-flex {
   display: flex;
   justify-content: space-between;

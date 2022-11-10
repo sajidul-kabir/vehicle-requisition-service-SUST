@@ -227,10 +227,10 @@
               </v-btn>
             </div>
             <v-row justify="center">
-              <v-dialog v-model="dialog" persistent max-width="300">
+              <v-dialog v-model="dialog" persistent max-width="400">
                 <v-card>
                   <v-card-title class="text-h5">
-                    Are you sure you want submit this requisition?
+                    Are you sure you want to submit this requisition?
                   </v-card-title>
                   <v-card-actions>
                     <v-spacer></v-spacer>

@@ -36,7 +36,9 @@
         <v-card-text class="ml-2">
           <div class="text-flex">
             <div class="mb-2">{{ requisition.created_at }}</div>
-            <div>Requisition ID #{{ requisition.id }}</div>
+            <div style="margin-right: 25px">
+              Requisition ID #{{ requisition.id }}
+            </div>
           </div>
 
           <p class="text-h5 text--primary">You Have Granted a Requisition</p>
@@ -57,7 +59,13 @@
         <v-card-actions class="mb-2 ml-2">
           <v-btn outlined color="red darken-1"> Cancel</v-btn>
           <div class="status-granted">Status: Granted</div>
-          <v-btn outlined color="indigo" class="details">See Details</v-btn>
+
+          <router-link
+            class="details"
+            :to="'/transport-home/granted/' + requisition.id"
+          >
+            <v-btn outlined color="indigo" class="details">See Details</v-btn>
+          </router-link>
         </v-card-actions>
       </v-card>
     </div>
@@ -116,7 +124,7 @@ export default {
           requisition.created_at = date;
 
           var xdate = new Date(requisition.selected_date);
-          console.log(xdate.toLocaleString());
+          //console.log(xdate.toLocaleString());
 
           requisition.selected_date = xdate.toLocaleString().split(",")[0];
         });
@@ -154,8 +162,9 @@ export default {
     tabBtn() {
       this.view = "tab";
     },
-    rowClick() {
-      this.$router.push("/transport-home/335");
+    rowClick(x) {
+      //console.log(x);
+      this.$router.push("/transport-home/granted/" + x.id);
     },
   },
   computed: {

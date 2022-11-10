@@ -6,6 +6,8 @@ import TeacherSchedule from "../components/Teacher/TeacherSchedule.vue";
 import TeacherHistory from "../components/Teacher/TeacherHistory.vue";
 import TransportHome from "../components/TransportOfficial/TransportHome.vue";
 import RequisitionDetails from "../components/TransportOfficial/RequisitionDetails.vue";
+import GrantedRequisitionDetails from "../components/TransportOfficial/GrantedRequisitionDetails.vue";
+import RejectedRequisitionDetails from "../components/TransportOfficial/RejectedRequisitionDetails.vue";
 import TransportGranted from "../components/TransportOfficial/TransportGranted.vue";
 import TransportRejected from "../components/TransportOfficial/TransportRejected.vue";
 import TransportSchedule from "../components/TransportOfficial/TransportSchedule.vue";
@@ -101,6 +103,18 @@ const routes = [
     path: "/transport-home/:requisition_id",
     name: "Details",
     component: RequisitionDetails,
+    props: true,
+  },
+  {
+    path: "/transport-home/granted/:requisition_id",
+    name: "GrantedDetails",
+    component: GrantedRequisitionDetails,
+    props: true,
+  },
+  {
+    path: "/transport-home/rejected/:requisition_id",
+    name: "RejectedDetails",
+    component: RejectedRequisitionDetails,
     props: true,
   },
   {

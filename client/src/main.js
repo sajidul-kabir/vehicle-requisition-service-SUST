@@ -4,7 +4,7 @@ import router from "./router";
 import store from "./store";
 import vuetify from "./plugins/vuetify";
 import VueCountdownTimer from "vuejs-countdown-timer";
-import './assets/tailwind.css'
+import "./assets/tailwind.css";
 Vue.use(VueCountdownTimer);
 Vue.config.productionTip = false;
 

@@ -36,7 +36,9 @@
         <v-card-text class="ml-2">
           <div class="text-flex">
             <div class="mb-2">{{ requisition.created_at }}</div>
-            <div>Requisition ID #{{ requisition.requisition_id }}</div>
+            <div style="margin-right: 25px">
+              Requisition ID #{{ requisition.requisition_id }}
+            </div>
           </div>
 
           <p class="text-h5 text--primary">You Have Rejected a Requisition</p>
@@ -53,7 +55,12 @@
         </v-card-text>
         <v-card-actions class="mb-2 ml-2">
           <div class="status-rejected">Status: Rejected</div>
-          <v-btn outlined color="indigo" class="details">See Details</v-btn>
+          <router-link
+            class="details"
+            :to="'/transport-home/rejected/' + requisition.requisition_id"
+          >
+            <v-btn outlined color="indigo" class="details">See Details</v-btn>
+          </router-link>
         </v-card-actions>
       </v-card>
     </div>

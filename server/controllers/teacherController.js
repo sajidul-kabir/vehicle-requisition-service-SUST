@@ -74,3 +74,12 @@ exports.getMySchedule = catchAsync(async (req, res, next) => {
     data: schedule[0],
   });
 });
+
+exports.cancelARequisition = catchAsync(async (req, res, next) => {
+  const id = req.params.id;
+  const query = "DELETE FROM requisitions where id=?";
+  const users = await pool.execute(query, [id]);
+  res.status(200).json({
+    message: "successfully deleted",
+  });
+});

@@ -50,8 +50,87 @@
         <strong>Vehicle No. :</strong> {{ vehicle_no }}
       </p>
 
-      <div class="holder">
-        <v-btn outlined color="red darken-1" class="reject"> Reject</v-btn>
+      <div class="teacher-holder" v-if="role === 'teacher'">
+        <v-btn
+          outlined
+          color="red darken-1"
+          class="reject"
+          @click="opendialog()"
+        >
+          Cancel</v-btn
+        >
+        <v-row justify="center">
+          <v-dialog v-model="dialog" persistent max-width="400">
+            <v-card>
+              <v-card-title class="text-h5">
+                Are you sure you want to cancel this requisition?
+              </v-card-title>
+              <v-card-actions>
+                <v-spacer></v-spacer>
+                <v-btn
+                  outlined
+                  color="red darken-1"
+                  text
+                  @click="dialog = false"
+                >
+                  NO
+                </v-btn>
+                <v-btn outlined color="green darken-2" text @click="cancel()">
+                  YES
+                </v-btn>
+              </v-card-actions>
+            </v-card>
+          </v-dialog>
+        </v-row>
+        <v-btn outlined color="indigo" class="reject"> Edit</v-btn>
+      </div>
+      <v-row justify="center">
+        <v-dialog v-model="dialog2" persistent max-width="435">
+          <v-card>
+            <v-card-title class="text-h5">
+              Are you sure you want to {{ dialogMode }} this requisition?
+            </v-card-title>
+            <v-card-actions>
+              <v-spacer></v-spacer>
+              <v-btn
+                outlined
+                color="red darken-1"
+                text
+                @click="dialog2 = false"
+              >
+                NO
+              </v-btn>
+              <v-btn
+                v-if="dialogMode === 'Reject'"
+                outlined
+                color="green darken-2"
+                text
+                @click="reject()"
+              >
+                YES
+              </v-btn>
+              <v-btn
+                v-if="dialogMode === 'Grant'"
+                outlined
+                color="green darken-2"
+                text
+                @click="grantRequisition()"
+              >
+                YES
+              </v-btn>
+            </v-card-actions>
+          </v-card>
+        </v-dialog>
+      </v-row>
+      <div class="holder" v-if="role === 'transport'">
+        <v-btn
+          outlined
+          color="red darken-1"
+          class="reject"
+          @click="opendialog2('Reject')"
+        >
+          Reject</v-btn
+        >
 
         <v-menu
           top
@@ -95,6 +174,7 @@
           color="green darken-1"
           class="ml-auto"
           :disabled="!grant"
+          @click="opendialog2('Grant')"
         >
           Grant</v-btn
         >
@@ -106,6 +186,7 @@
 <script>
 import api from "@/api";
 import axios from "axios";
+//import { config } from "vue/types/umd";
 export default {
   props: ["requisition_id"],
 
@@ -113,6 +194,7 @@ export default {
     const config = {
       headers: { Authorization: `Bearer ${this.$store.getters["auth/token"]}` },
     };
+    this.role = this.$store.getters["auth/role"];
     const id = this.$route.params.requisition_id;
     axios
       .get(`${api}/transport/pending/${id}`, config)
@@ -151,6 +233,7 @@ export default {
   },
 
   data: () => ({
+    role: null,
     loading: true,
     progress: false,
     offset: true,
@@ -166,20 +249,102 @@ export default {
     end_time: "",
     destination: "",
     reason: "",
+    drivers_id: "",
     drivers_name: "",
     drivers_phone: "",
     vehicle_no: "",
     need: null,
     grant: false,
+    dialogMode: "",
+    dialog: false,
+    dialog2: false,
     drivers: [],
   }),
   methods: {
     select(driver) {
       this.selectedDriver = driver.fullname;
+      this.drivers_id = driver.id;
       this.drivers_name = driver.fullname;
       this.drivers_phone = driver.phone;
       this.vehicle_no = driver.vehicle_no;
       this.grant = true;
+    },
+    grantRequisition() {
+      this.dialog2 = false;
+      this.loading = true;
+      const config = {
+        headers: {
+          Authorization: `Bearer ${this.$store.getters["auth/token"]}`,
+        },
+      };
+      const obj = {
+        requisition_id: this.requisition_id,
+        driver_id: this.drivers_id,
+      };
+      axios
+        .post(`${api}/transport/pending/grant`, obj, config)
+        .then((res) => {
+          console.log(res);
+          this.loading = false;
+          this.$router.push("/granted-requisitions");
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    },
+    cancel() {
+      console.log(this.requisition_id);
+
+      const config = {
+        headers: {
+          Authorization: `Bearer ${this.$store.getters["auth/token"]}`,
+        },
+      };
+
+      this.dialog = false;
+      this.loading = true;
+      //console.log(this.requisition_to_be_deleted);
+      axios
+        .delete(`${api}/teachers/cancel/${this.requisition_id}`, config)
+        .then((res) => {
+          console.log(res);
+          this.loading = false;
+          //this.requisition_to_be_deleted = null;
+          this.$router.push("/teacher-history");
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    },
+    reject() {
+      this.dialog2 = false;
+      this.loading = true;
+      const config = {
+        headers: {
+          Authorization: `Bearer ${this.$store.getters["auth/token"]}`,
+        },
+      };
+
+      const obj = {
+        requisition_id: this.requisition_id,
+      };
+      axios
+        .post(`${api}/transport/pending/reject`, obj, config)
+        .then((res) => {
+          console.log(res);
+          this.loading = false;
+          this.$router.push("/rejected-requisitions");
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    },
+    opendialog() {
+      this.dialog = true;
+    },
+    opendialog2(x) {
+      this.dialog2 = true;
+      this.dialogMode = x;
     },
     assignDriver() {
       this.progress = true;
@@ -244,6 +409,11 @@ export default {
 </script>
 
 <style scoped>
+.teacher-holder {
+  margin-top: 65px;
+  display: flex;
+  justify-content: space-between;
+}
 .main-form {
   max-width: 700px;
 }

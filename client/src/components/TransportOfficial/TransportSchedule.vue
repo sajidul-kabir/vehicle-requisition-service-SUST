@@ -192,8 +192,9 @@ export default {
     next() {
       this.$refs.calendar.next();
     },
-    calendarEvent() {
-      this.$router.push("/transport-home/335");
+    calendarEvent(x) {
+      //console.log(x);
+      this.$router.push("/transport-home/granted/" + x.event.id);
     },
     randomIntFromInterval(min, max) {
       return Math.floor(Math.random() * (max - min + 1) + min);
