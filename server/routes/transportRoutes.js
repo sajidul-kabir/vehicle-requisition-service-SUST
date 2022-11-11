@@ -10,6 +10,7 @@ router.use(authMiddleware.protectRoute);
 router.route("/").get(transportController.getAllTransports);
 router.route("/pending").get(transportController.getAllPendingRequisitions);
 router.get("/driver-schedules", transportController.seeDriverSchedules);
+router.get("/running", transportController.getAllRunningOrCompleted);
 
 router
   .route("/pending/grant")

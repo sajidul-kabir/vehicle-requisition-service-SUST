@@ -11,6 +11,7 @@ import RejectedRequisitionDetails from "../components/TransportOfficial/Rejected
 import TransportGranted from "../components/TransportOfficial/TransportGranted.vue";
 import TransportRejected from "../components/TransportOfficial/TransportRejected.vue";
 import TransportSchedule from "../components/TransportOfficial/TransportSchedule.vue";
+import TransportRunning from "../components/TransportOfficial/RunningRequisitions.vue";
 import DriverHome from "../components/Driver/DriverHome.vue";
 import DriverUpdate from "../components/Driver/DriverUpdate.vue";
 import DriverCompleted from "../components/Driver/DriverCompleted.vue";
@@ -83,6 +84,16 @@ const routes = [
     path: "/rejected-requisitions",
     name: "TransportRejected",
     component: TransportRejected,
+    beforeEnter: (to, from, next) => {
+      checkAuth(next);
+      checkTransport(next);
+      next();
+    },
+  },
+  {
+    path: "/running-requisitions",
+    name: "TransportRunning",
+    component: TransportRunning,
     beforeEnter: (to, from, next) => {
       checkAuth(next);
       checkTransport(next);

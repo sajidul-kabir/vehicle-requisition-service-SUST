@@ -83,3 +83,13 @@ exports.cancelARequisition = catchAsync(async (req, res, next) => {
     message: "successfully deleted",
   });
 });
+
+exports.markCompleted = catchAsync(async (req, res, next) => {
+  const id = req.params.id;
+  const query =
+    "update granted_requisitions set status='completed' where requisition_id=?";
+  const users = await pool.execute(query, [id]);
+  res.status(200).json({
+    message: "successfully updated",
+  });
+});

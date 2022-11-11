@@ -356,6 +356,13 @@ export default {
       this.submitted = true;
       this.dialog = false;
       // console.log(this.date, this.start_time, this.end_time, this.need);
+      this.$toast.open({
+        message: "Successfully Submitted",
+        type: "success",
+        duration: 3000,
+        position: "top",
+        dismissible: true,
+      });
       const config = {
         headers: {
           Authorization: `Bearer ${this.$store.getters["auth/token"]}`,
