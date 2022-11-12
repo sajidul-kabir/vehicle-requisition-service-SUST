@@ -98,8 +98,38 @@
           >
             <v-btn outlined color="indigo" class="details">See Details</v-btn>
           </router-link>
+          <v-btn
+            outlined
+            color="indigo"
+            class="pendingComplete"
+            @click="openDialog(requisition.id)"
+            >Mark as Completed</v-btn
+          >
         </v-card-actions>
       </v-card>
+      <v-row justify="center">
+        <v-dialog v-model="dialog" persistent max-width="380">
+          <v-card>
+            <v-card-title class="text-h5">
+              Are you sure you want to Mark this requisition as Completed?
+            </v-card-title>
+            <v-card-actions>
+              <v-spacer></v-spacer>
+              <v-btn outlined color="red darken-1" text @click="dialog = false">
+                NO
+              </v-btn>
+              <v-btn
+                outlined
+                color="green darken-2"
+                text
+                @click="pendingComplete()"
+              >
+                YES
+              </v-btn>
+            </v-card-actions>
+          </v-card>
+        </v-dialog>
+      </v-row>
     </div>
     <div v-else>
       <v-card class="ml-12 mt-12 mr-6">
@@ -189,6 +219,8 @@ export default {
     search: "",
     loading: true,
     actualStatus: null,
+    dialog: false,
+    current: null,
     headers: [
       {
         text: "Requisition ID",
@@ -222,6 +254,36 @@ export default {
     },
     endCallBack: function (x) {
       console.log(x);
+    },
+    openDialog(id) {
+      this.dialog = true;
+      this.current = id;
+    },
+    pendingComplete() {
+      this.loading = true;
+      const config = {
+        headers: {
+          Authorization: `Bearer ${this.$store.getters["auth/token"]}`,
+        },
+      };
+
+      axios
+        .patch(`${api}/transport/running/${this.current}`, {}, config)
+        .then((res) => {
+          console.log(res);
+          this.dialog = false;
+          this.loading = false;
+          this.$toast.open({
+            message: "Successfully marked as completed",
+            type: "success",
+            duration: 3000,
+            position: "top",
+            dismissible: true,
+          });
+        })
+        .catch((err) => {
+          console.log(err);
+        });
     },
   },
   computed: {
@@ -273,6 +335,9 @@ export default {
 }
 a {
   text-decoration: none;
+}
+.pendingComplete {
+  margin-right: 15px;
 }
 
 .tab-btn {

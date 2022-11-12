@@ -1,6 +1,7 @@
 import Vue from "vue";
 import VueRouter from "vue-router";
 import LoginUser from "../components/auth/LoginUser.vue";
+import SignupUser from "../components/auth/SignupUser.vue";
 import HomeView from "../views/HomeView.vue";
 import TeacherSchedule from "../components/Teacher/TeacherSchedule.vue";
 import TeacherHistory from "../components/Teacher/TeacherHistory.vue";
@@ -29,6 +30,11 @@ const routes = [
     path: "/login",
     name: "login",
     component: LoginUser,
+  },
+  {
+    path: "/signup",
+    name: "signup",
+    component: SignupUser,
   },
   {
     path: "/teacher-home",

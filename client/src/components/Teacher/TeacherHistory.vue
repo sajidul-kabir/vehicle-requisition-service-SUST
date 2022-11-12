@@ -37,7 +37,7 @@
       </v-card-text>
       <v-card-actions class="mb-2 ml-2">
         <v-btn
-          :class="requisition.status === 'rejected' ? 'cancel' : ''"
+          :class="cancelClass(requisition.status)"
           outlined
           color="red darken-1"
           @click="openDialog(requisition.requisition_id)"
@@ -85,6 +85,13 @@
           v-if="requisition.status === 'rejected'"
           class="details"
           :to="'/transport-home/rejected/' + requisition.requisition_id"
+        >
+          <v-btn outlined color="indigo" class="details">See Details</v-btn>
+        </router-link>
+        <router-link
+          v-if="requisition.status === 'completed'"
+          class="details"
+          :to="'/transport-home/granted/' + requisition.requisition_id"
         >
           <v-btn outlined color="indigo" class="details">See Details</v-btn>
         </router-link>
@@ -188,7 +195,15 @@ export default {
       this.requisition_to_be_deleted = id;
       console.log(id);
     },
+    cancelClass(x) {
+      if (x === "rejected" || x === "completed") {
+        return "cancel";
+      } else {
+        return "";
+      }
+    },
   },
+  computed: {},
   components: {
     TeacherNav,
   },

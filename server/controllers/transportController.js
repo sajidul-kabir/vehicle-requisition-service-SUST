@@ -214,3 +214,16 @@ exports.getAllRunningOrCompleted = catchAsync(async (req, res, next) => {
     data: users[0],
   });
 });
+
+exports.markCompleted = catchAsync(async (req, res, next) => {
+  const id = req.params.id;
+  let query =
+    "update granted_requisitions set status='actually_completed' where requisition_id=?";
+  await pool.execute(query, [id]);
+
+  query = "update requisitions set status='completed' where id=?";
+  await pool.execute(query, [id]);
+  res.status(200).json({
+    message: "successfully updated",
+  });
+});
