@@ -78,6 +78,11 @@ export default {
         icon: "mdi-close-circle-outline",
         to: "rejected-requisitions",
       },
+      {
+        title: "Running Requistions",
+        icon: "mdi-run-fast",
+        to: "running-requisitions",
+      },
       { title: "My Account", icon: "mdi-account" },
     ],
   }),

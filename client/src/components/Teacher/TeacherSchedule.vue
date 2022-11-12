@@ -32,7 +32,7 @@
           <template>
             <vue-countdown-timer
               @start_callback="startCallBack('event started')"
-              @end_callback="endCallBack('event ended')"
+              @end_callback="endCallBack(requisition.id)"
               :start-time="Date.now()"
               :end-time="requisition.special"
               :interval="1000"
@@ -109,8 +109,8 @@ export default {
           requisition.selected_date = xdate.toLocaleString().split(",")[0];
           let yHour = requisition.start_time.substring(0, 2);
           let yMin = requisition.start_time.substring(3, 5);
-          console.log(yHour);
-          console.log(yMin);
+          // console.log(yHour);
+          // console.log(yMin);
           requisition.special =
             Date.parse(xdate.toLocaleString()) +
             parseInt(yHour) * 60 * 60 * 1000 +
@@ -131,10 +131,22 @@ export default {
   },
   methods: {
     startCallBack: function (x) {
-      console.log(x);
+      console.log(x, "start");
     },
     endCallBack: function (x) {
-      console.log(x);
+      const config = {
+        headers: {
+          Authorization: `Bearer ${this.$store.getters["auth/token"]}`,
+        },
+      };
+      axios
+        .patch(`${api}/teachers/complete/${x}`, {}, config)
+        .then((res) => {
+          console.log(res);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
     },
   },
   components: {

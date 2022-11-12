@@ -14,5 +14,6 @@ router
 
 router.route("/history").get(teacherController.getMyHistory);
 router.route("/my-schedule").get(teacherController.getMySchedule);
+router.route("/complete/:id").patch(teacherController.markCompleted);
 router.route("/cancel/:id").delete(teacherController.cancelARequisition);
 module.exports = router;

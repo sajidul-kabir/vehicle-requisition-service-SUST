@@ -1,6 +1,7 @@
 import Vue from "vue";
 import VueRouter from "vue-router";
 import LoginUser from "../components/auth/LoginUser.vue";
+import SignupUser from "../components/auth/SignupUser.vue";
 import HomeView from "../views/HomeView.vue";
 import TeacherSchedule from "../components/Teacher/TeacherSchedule.vue";
 import TeacherHistory from "../components/Teacher/TeacherHistory.vue";
@@ -11,6 +12,7 @@ import RejectedRequisitionDetails from "../components/TransportOfficial/Rejected
 import TransportGranted from "../components/TransportOfficial/TransportGranted.vue";
 import TransportRejected from "../components/TransportOfficial/TransportRejected.vue";
 import TransportSchedule from "../components/TransportOfficial/TransportSchedule.vue";
+import TransportRunning from "../components/TransportOfficial/RunningRequisitions.vue";
 import DriverHome from "../components/Driver/DriverHome.vue";
 import DriverUpdate from "../components/Driver/DriverUpdate.vue";
 import DriverCompleted from "../components/Driver/DriverCompleted.vue";
@@ -28,6 +30,11 @@ const routes = [
     path: "/login",
     name: "login",
     component: LoginUser,
+  },
+  {
+    path: "/signup",
+    name: "signup",
+    component: SignupUser,
   },
   {
     path: "/teacher-home",
@@ -83,6 +90,16 @@ const routes = [
     path: "/rejected-requisitions",
     name: "TransportRejected",
     component: TransportRejected,
+    beforeEnter: (to, from, next) => {
+      checkAuth(next);
+      checkTransport(next);
+      next();
+    },
+  },
+  {
+    path: "/running-requisitions",
+    name: "TransportRunning",
+    component: TransportRunning,
     beforeEnter: (to, from, next) => {
       checkAuth(next);
       checkTransport(next);

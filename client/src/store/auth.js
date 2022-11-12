@@ -38,6 +38,27 @@ export default {
     },
   },
   actions: {
+    async signUp({ dispatch }, credentials) {
+      let response = await axios.post(`${api}/users/signup`, credentials, {
+        withCredentials: true,
+      });
+
+      console.log(response);
+      return dispatch("attempt2", response.data);
+      //console.log(response.data);
+    },
+    async attempt2({ commit }, data) {
+      commit("SET_TOKEN", data.accessToken);
+      if (data.role === "teacher") {
+        commit("SET_USER", data.newTeacher.username);
+      } else if (data.role === "transport") {
+        commit("SET_USER", data.newTransport.username);
+      } else {
+        commit("SET_USER", data.newDriver.username);
+      }
+      commit("SET_ROLE", data.role);
+    },
+
     async signIn({ dispatch }, credentials) {
       let response = await axios.post(`${api}/users/login`, credentials, {
         withCredentials: true,

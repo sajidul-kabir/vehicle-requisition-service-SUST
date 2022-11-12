@@ -129,7 +129,7 @@ exports.getAGranted = catchAsync(async (req, res, next) => {
   if (!id) {
     return next(new AppError("provide the required fields", 400));
   }
-  const query = `SELECT requisitions.need,requisitions.id,teachers.fullname as teacher_name,teachers.department,teachers.designation, teachers.phone,requisitions.start_time,requisitions.end_time,requisitions.selected_date,requisitions.destination,requisitions.reason_for_vehicle, drivers.fullname as driver_name, drivers.phone as driver_phone, drivers.vehicle_no,granted_requisitions.status,granted_requisitions.created_at FROM drivers INNER JOIN granted_requisitions ON drivers.id=granted_requisitions.driver_id INNER JOIN requisitions on granted_requisitions.requisition_id=requisitions.id INNER join teachers on requisitions.teacher_id=teachers.id WHERE granted_requisitions.status='granted' AND granted_requisitions.requisition_id=?`;
+  const query = `SELECT requisitions.need,requisitions.id,teachers.fullname as teacher_name,teachers.department,teachers.designation, teachers.phone,requisitions.start_time,requisitions.end_time,requisitions.selected_date,requisitions.destination,requisitions.reason_for_vehicle, drivers.fullname as driver_name, drivers.phone as driver_phone, drivers.vehicle_no,granted_requisitions.status,granted_requisitions.created_at FROM drivers INNER JOIN granted_requisitions ON drivers.id=granted_requisitions.driver_id INNER JOIN requisitions on granted_requisitions.requisition_id=requisitions.id INNER join teachers on requisitions.teacher_id=teachers.id WHERE granted_requisitions.requisition_id=?`;
   const users = await pool.execute(query, [id]);
   res.status(200).json({
     message: "successful",
@@ -252,3 +252,26 @@ const formatStartTime = (start_time) => {
   }
   return `${hour}:${minute} ${status}`;
 };
+
+exports.getAllRunningOrCompleted = catchAsync(async (req, res, next) => {
+  const query = `SELECT requisitions.need,requisitions.id,teachers.fullname as teacher_name,teachers.phone,requisitions.start_time,requisitions.end_time,requisitions.selected_date,requisitions.destination,drivers.fullname as driver_name,granted_requisitions.status,granted_requisitions.created_at FROM drivers INNER JOIN granted_requisitions ON drivers.id=granted_requisitions.driver_id INNER JOIN requisitions on granted_requisitions.requisition_id=requisitions.id INNER join teachers on requisitions.teacher_id=teachers.id WHERE granted_requisitions.status='completed' order by  granted_requisitions.created_at desc`;
+  const users = await pool.execute(query);
+  res.status(200).json({
+    message: "successful",
+    total: users[0].length,
+    data: users[0],
+  });
+});
+
+exports.markCompleted = catchAsync(async (req, res, next) => {
+  const id = req.params.id;
+  let query =
+    "update granted_requisitions set status='actually_completed' where requisition_id=?";
+  await pool.execute(query, [id]);
+
+  query = "update requisitions set status='completed' where id=?";
+  await pool.execute(query, [id]);
+  res.status(200).json({
+    message: "successfully updated",
+  });
+});
