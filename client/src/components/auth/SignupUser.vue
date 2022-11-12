@@ -1,7 +1,7 @@
 <template>
-  <div class="bg-slate-100 h-screen flex justify-center items-center w-screen">
+  <div class="bg-slate-100 min-h-screen h-fit p-4 flex justify-center items-center w-screen">
     <form
-      class="bg-white w-fit p-10 rounded-2xl"
+      class="bg-white w-fit h-fit p-10 rounded-2xl"
       action="sumbit"
       @submit.prevent="SignUpUser"
     >
@@ -22,29 +22,6 @@
         <p>sd</p>
       </div> -->
       <div>
-        <div class="mb-4">
-          <label
-            :style="{ color: wrongUser ? 'red' : '' }"
-            class="block text-gray-700 text-sm font-bold mb-2"
-            for="username"
-          >
-            Username
-          </label>
-
-          <input
-            :style="[
-              { borderBottom: wrongUser ? '1px solid red' : '' },
-              { color: wrongUser ? 'red' : '' },
-            ]"
-            class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-teal-100 focus:outline-1 focus:shadow-outline"
-            id="username"
-            v-model="username"
-            type="text"
-            placeholder="Username"
-            required="true"
-            @blur="validateUser"
-          />
-        </div>
         <div v-if="wrongUser">
           <img class="invalidImg" src="/assets/invalid.png" alt="" />
           <p class="invalid">Invalid Username</p>
@@ -65,7 +42,18 @@
             placeholder="Fullname"
             required="true"
           />
+          <div class="mb-4">
+            <label :style="{ color: wrongUser ? 'red' : '' }" class="block text-gray-700 text-sm font-bold mb-2" for="username">
+              Username
+            </label>
 
+            <input :style="[
+                        { borderBottom: wrongUser ? '1px solid red' : '' },
+                        { color: wrongUser ? 'red' : '' },
+                      ]"
+              class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-teal-100 focus:outline-1 focus:shadow-outline"
+              id="username" v-model="username" type="text" placeholder="Username" required="true" @blur="validateUser" />
+          </div>
           <div class="mb-6" v-if="role === 'teacher' || role === 'transport'">
             <label
               class="block text-gray-700 text-sm font-bold mb-2"

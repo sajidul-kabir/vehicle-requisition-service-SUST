@@ -1,5 +1,5 @@
 <template>
-  <div class="bg-slate-100 h-screen flex justify-center items-center w-screen">
+  <div class="bg-slate-100 min-h-screen h-fit flex justify-center items-center w-screen">
     <form
       class="bg-white w-fit p-10 rounded-2xl"
       action="sumbit"
