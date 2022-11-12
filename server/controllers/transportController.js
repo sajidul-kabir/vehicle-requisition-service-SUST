@@ -1,7 +1,7 @@
 const pool = require("../db");
 const AppError = require("../utils/AppError");
 const catchAsync = require("../utils/catchAsync");
-
+const twilio = require("twilio");
 // Selectiong All teachers
 exports.getAllTransports = catchAsync(async (req, res, next) => {
   const query = "SELECT * FROM transport_section";
@@ -51,6 +51,12 @@ exports.grantARequisition = catchAsync(async (req, res, next) => {
     granted_by: req.user,
   };
 
+  const getRequisitionQuery = `select * from requisitions where id=${requisition_id}`;
+  const getDriverQuery = `select * from drivers where id=${driver_id}`;
+  const fetchedRequisition = await pool.execute(getRequisitionQuery);
+  const requisition = fetchedRequisition[0][0];
+  const fetchedDriver = await pool.execute(getDriverQuery);
+  const driver = fetchedDriver[0][0];
   const alterQuery = `UPDATE requisitions
   SET status = 'granted'
   WHERE id = ${requisition_id}`;
@@ -61,9 +67,26 @@ exports.grantARequisition = catchAsync(async (req, res, next) => {
     "INSERT INTO granted_requisitions SET ?",
     newGrantedRequisition
   );
+
+  selected_date = requisition.selected_date;
+  const date = selected_date.getUTCDate();
+  const month = selected_date.getUTCMonth() + 1;
+  const year = selected_date.getUTCFullYear();
+
+  //TODO add drivers number after getting a paid account from twilio
+
+  driverPhoneNumber = driver.phone;
+
+  await sendSms(
+    "+8801819439269",
+    `A requisition granted for ${requisition.destination} on ${
+      date + "/" + month + "/" + year
+    } ${formatStartTime(requisition.start_time)}`
+  );
+
   res.status(200).json({
     message: "successfully granted",
-    data: grantedRequsition,
+    data: grantedRequsition[0],
   });
 });
 
@@ -80,11 +103,11 @@ exports.rejectARequisition = catchAsync(async (req, res, next) => {
 
   await pool.execute(alterQuery);
 
-  // const alterQuery2 = `UPDATE requisitions
-  // SET created_at = ${Date.now()}
-  // WHERE id = ${requisition_id}`;
+  const alterQuery2 = `UPDATE requisitions
+  SET created_at = ${Date.now()}
+  WHERE id = ${requisition_id}`;
 
-  // await pool.execute(alterQuery2);
+  await pool.execute(alterQuery2);
 
   res.status(200).json({
     message: "rejected",
@@ -204,3 +227,28 @@ exports.getAllAvailableDrivers = catchAsync(async (req, res, next) => {
     data: availableDrivers[0],
   });
 });
+
+const sendSms = async (driverPhoneNumber, driverSms) => {
+  const accountSid = process.env.TWILIO_ACCOUNT_SID;
+  const authToken = process.env.TWILIO_AUTH_TOKEN;
+  const client = twilio(accountSid, authToken);
+
+  let message = await client.messages.create({
+    body: driverSms,
+    from: process.env.TWILIO_NUMBER,
+    to: driverPhoneNumber,
+  });
+  console.log(message);
+};
+
+const formatStartTime = (start_time) => {
+  time = start_time.split(":");
+  let hour = time[0];
+  let minute = time[1];
+  let status = "AM";
+  if (hour > 12) {
+    hour -= 12;
+    status = "PM";
+  }
+  return `${hour}:${minute} ${status}`;
+};
