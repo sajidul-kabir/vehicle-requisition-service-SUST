@@ -9,6 +9,10 @@ const AppError = require("./utils/AppError");
 const globalErrorHandler = require("./controllers/errorController");
 
 const app = express();
+app.use(express.static("img/"));
+app.use(express.static("img/teachers/"));
+app.use(express.static("img/transport-officials/"));
+app.use(express.static("img/drivers/"));
 app.use(cors({ origin: ["http://localhost:8080"], credentials: true }));
 app.use(express.json());
 app.use(cookieParser());

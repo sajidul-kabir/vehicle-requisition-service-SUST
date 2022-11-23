@@ -6,7 +6,7 @@
         <br />
       </div>
     </v-expand-transition>
-    <transport-nav>
+    <transport-nav :username="username" :user_photo="user_photo">
       <template>
         <v-toolbar-title>See Rejected Requisitons</v-toolbar-title>
       </template>
@@ -103,6 +103,25 @@ export default {
     const config = {
       headers: { Authorization: `Bearer ${this.$store.getters["auth/token"]}` },
     };
+    this.username = this.$store.getters["auth/user"];
+    const user = {
+      username: this.$store.getters["auth/user"],
+      role: this.$store.getters["auth/role"],
+    };
+
+    axios
+      .post(`${api}/users/me`, user, config)
+      .then((res) => {
+        if (res.data.data[0].user_photo != null)
+          this.user_photo = res.data.data[0].user_photo;
+
+        if (this.user_photo === "user.png") {
+          this.user_photo = null;
+        }
+      })
+      .catch((err) => {
+        console.log(err);
+      });
     axios
       .get(`${api}/transport/pending/reject`, config)
       .then((res) => {
@@ -134,6 +153,8 @@ export default {
     show: false,
     requisitions: [],
     loading: true,
+    username: "",
+    user_photo: null,
     headers: [
       {
         text: "Requisition ID",

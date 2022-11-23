@@ -8,6 +8,13 @@ router.use(authMiddleware.protectRoute);
 
 // Blog CRUD
 router.route("/").get(transportController.getAllTransports);
+router
+  .route("/me")
+  .patch(
+    transportController.uploadUserPhoto,
+    transportController.resizeUserPhoto,
+    transportController.updateTransport
+  );
 router.route("/pending").get(transportController.getAllPendingRequisitions);
 router.get("/driver-schedules", transportController.seeDriverSchedules);
 router.get("/running", transportController.getAllRunningOrCompleted);

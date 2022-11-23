@@ -6,7 +6,7 @@
         <br />
       </div>
     </v-expand-transition>
-    <transport-nav>
+    <transport-nav :username="username" :user_photo="user_photo">
       <template>
         <v-toolbar-title>See Drivers' Schedule</v-toolbar-title>
       </template>
@@ -104,6 +104,25 @@ export default {
     const config = {
       headers: { Authorization: `Bearer ${this.$store.getters["auth/token"]}` },
     };
+    this.username = this.$store.getters["auth/user"];
+    const user = {
+      username: this.$store.getters["auth/user"],
+      role: this.$store.getters["auth/role"],
+    };
+
+    axios
+      .post(`${api}/users/me`, user, config)
+      .then((res) => {
+        if (res.data.data[0].user_photo != null)
+          this.user_photo = res.data.data[0].user_photo;
+
+        if (this.user_photo === "user.png") {
+          this.user_photo = null;
+        }
+      })
+      .catch((err) => {
+        console.log(err);
+      });
     //console.log(this.$store.getters["auth/token"]);
     axios
       .get(`${api}/drivers`, config)
@@ -139,6 +158,8 @@ export default {
     today: "2022-09-16",
     focus: "",
     loading: true,
+    username: "",
+    user_photo: null,
 
     intervals: {
       first: 7,

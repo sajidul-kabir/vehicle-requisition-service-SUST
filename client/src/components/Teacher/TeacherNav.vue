@@ -3,8 +3,11 @@
     <v-navigation-drawer v-model="drawer" app left>
       <template v-slot:prepend>
         <v-list-item two-line>
-          <v-list-item-avatar>
-            <img src="../../assets/institute-office-1541422371.jpg" />
+          <v-list-item-avatar v-if="user_photo">
+            <img :src="`${path}${user_photo}`" alt="photo.png" />
+          </v-list-item-avatar>
+          <v-list-item-avatar v-else
+            ><div class="no-photo">{{ initial }}</div>
           </v-list-item-avatar>
 
           <v-list-item-content>
@@ -53,9 +56,14 @@
 
 <script>
 export default {
-  props: ["username"],
+  props: ["username", "user_photo"],
+  created() {
+    this.initial = this.$store.getters["auth/user"][0].toUpperCase();
+  },
   data: () => ({
     drawer: true,
+    path: "http://localhost:5000/",
+    initial: "",
     items: [
       {
         title: "Submit A Requisition",
@@ -72,9 +80,19 @@ export default {
         icon: "mdi-clipboard-text-clock-outline",
         to: "/teacher-history",
       },
-      { title: "My Costs", icon: "mdi-currency-usd" },
-      { title: "My Account", icon: "mdi-account" },
+      { title: "My Account", icon: "mdi-account", to: "/teacher-account" },
     ],
   }),
 };
 </script>
+
+<style scoped>
+.no-photo {
+  background-color: teal;
+  color: white;
+  width: 100%;
+  height: 100%;
+  font-size: 25px;
+  padding-top: 4px;
+}
+</style>

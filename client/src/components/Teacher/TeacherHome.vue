@@ -7,7 +7,7 @@
           <br />
         </div>
       </v-expand-transition>
-      <TeacherNav :username="username">
+      <TeacherNav :username="username" :user_photo="user_photo">
         <template>
           <v-toolbar-title
             >Welcome to Vehicle Requisition Service</v-toolbar-title
@@ -283,6 +283,14 @@ export default {
         this.users_phone = res.data.data[0].phone;
         this.designation =
           res.data.data[0].designation + ", " + res.data.data[0].department;
+        if (res.data.data[0].user_photo != null)
+          this.user_photo = res.data.data[0].user_photo;
+
+        if (this.user_photo === "user.png") {
+          this.user_photo = null;
+        }
+        console.log(this.user_photo);
+        console.log(this.username);
       })
       .catch((err) => {
         console.log(err);
@@ -292,6 +300,7 @@ export default {
   name: "TeacherHome",
   data: () => ({
     username: "",
+    user_photo: null,
     valid: false,
     name: "",
     phone: "",

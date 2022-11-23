@@ -5,6 +5,7 @@ import SignupUser from "../components/auth/SignupUser.vue";
 import HomeView from "../views/HomeView.vue";
 import TeacherSchedule from "../components/Teacher/TeacherSchedule.vue";
 import TeacherHistory from "../components/Teacher/TeacherHistory.vue";
+import TeacherAccount from "../components/Teacher/TeacherAccount.vue";
 import TransportHome from "../components/TransportOfficial/TransportHome.vue";
 import RequisitionDetails from "../components/TransportOfficial/RequisitionDetails.vue";
 import GrantedRequisitionDetails from "../components/TransportOfficial/GrantedRequisitionDetails.vue";
@@ -13,9 +14,11 @@ import TransportGranted from "../components/TransportOfficial/TransportGranted.v
 import TransportRejected from "../components/TransportOfficial/TransportRejected.vue";
 import TransportSchedule from "../components/TransportOfficial/TransportSchedule.vue";
 import TransportRunning from "../components/TransportOfficial/RunningRequisitions.vue";
+import TransportAccount from "../components/TransportOfficial/TransportAccount.vue";
 import DriverHome from "../components/Driver/DriverHome.vue";
 import DriverUpdate from "../components/Driver/DriverUpdate.vue";
 import DriverCompleted from "../components/Driver/DriverCompleted.vue";
+import DriverAccount from "../components/Driver/DriverAccount.vue";
 //import store from "@/store";
 import checkAuth from "../middlewares/authMiddleware";
 import checkTransport from "../middlewares/transportMiddleware";
@@ -67,6 +70,16 @@ const routes = [
     },
   },
   {
+    path: "/teacher-account",
+    name: "TeacherAccount",
+    component: TeacherAccount,
+    beforeEnter: (to, from, next) => {
+      checkAuth(next);
+      checkTeacher(next);
+      next();
+    },
+  },
+  {
     path: "/transport-home",
     name: "TransportHome",
     component: TransportHome,
@@ -100,6 +113,16 @@ const routes = [
     path: "/running-requisitions",
     name: "TransportRunning",
     component: TransportRunning,
+    beforeEnter: (to, from, next) => {
+      checkAuth(next);
+      checkTransport(next);
+      next();
+    },
+  },
+  {
+    path: "/transport-account",
+    name: "TransportAccount",
+    component: TransportAccount,
     beforeEnter: (to, from, next) => {
       checkAuth(next);
       checkTransport(next);
@@ -158,6 +181,16 @@ const routes = [
     path: "/driver-completed-requisitions",
     name: "DriverCompleted",
     component: DriverCompleted,
+    beforeEnter: (to, from, next) => {
+      checkAuth(next);
+      checkDriver(next);
+      next();
+    },
+  },
+  {
+    path: "/driver-account",
+    name: "DriverAccount",
+    component: DriverAccount,
     beforeEnter: (to, from, next) => {
       checkAuth(next);
       checkDriver(next);

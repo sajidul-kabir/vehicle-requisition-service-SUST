@@ -6,7 +6,7 @@
         <br />
       </div>
     </v-expand-transition>
-    <transport-nav>
+    <transport-nav :username="username" :user_photo="user_photo">
       <template>
         <v-toolbar-title>See Granted Requisitons</v-toolbar-title>
       </template>
@@ -57,7 +57,13 @@
           </p>
         </v-card-text>
         <v-card-actions class="mb-2 ml-2">
-          <v-btn outlined color="red darken-1"> Cancel</v-btn>
+          <v-btn
+            outlined
+            color="red darken-1"
+            @click="openDialog(requisition.id)"
+          >
+            Cancel</v-btn
+          >
           <div class="status-granted">Status: Granted</div>
 
           <router-link
@@ -68,6 +74,24 @@
           </router-link>
         </v-card-actions>
       </v-card>
+      <v-row justify="center">
+        <v-dialog v-model="dialog" persistent max-width="380">
+          <v-card>
+            <v-card-title class="text-h5">
+              Are you sure you want to reject this requisition?
+            </v-card-title>
+            <v-card-actions>
+              <v-spacer></v-spacer>
+              <v-btn outlined color="red darken-1" text @click="dialog = false">
+                NO
+              </v-btn>
+              <v-btn outlined color="green darken-2" text @click="cancel()">
+                YES
+              </v-btn>
+            </v-card-actions>
+          </v-card>
+        </v-dialog>
+      </v-row>
     </div>
     <div v-else>
       <v-card class="ml-12 mt-12 mr-6">
@@ -107,6 +131,25 @@ export default {
     const config = {
       headers: { Authorization: `Bearer ${this.$store.getters["auth/token"]}` },
     };
+    this.username = this.$store.getters["auth/user"];
+    const user = {
+      username: this.$store.getters["auth/user"],
+      role: this.$store.getters["auth/role"],
+    };
+
+    axios
+      .post(`${api}/users/me`, user, config)
+      .then((res) => {
+        if (res.data.data[0].user_photo != null)
+          this.user_photo = res.data.data[0].user_photo;
+
+        if (this.user_photo === "user.png") {
+          this.user_photo = null;
+        }
+      })
+      .catch((err) => {
+        console.log(err);
+      });
     axios
       .get(`${api}/transport/pending/grant`, config)
       .then((res) => {
@@ -139,6 +182,10 @@ export default {
     requisitions: [],
     search: "",
     loading: true,
+    username: "",
+    user_photo: null,
+    requisition_to_be_deleted: "",
+    dialog: false,
     headers: [
       {
         text: "Requisition ID",
@@ -165,6 +212,35 @@ export default {
     rowClick(x) {
       //console.log(x);
       this.$router.push("/transport-home/granted/" + x.id);
+    },
+    openDialog(id) {
+      this.dialog = true;
+      this.requisition_to_be_deleted = id;
+      console.log(id);
+    },
+    cancel() {
+      const config = {
+        headers: {
+          Authorization: `Bearer ${this.$store.getters["auth/token"]}`,
+        },
+      };
+      this.dialog = false;
+      this.loading = true;
+      console.log(this.requisition_to_be_deleted);
+      axios
+        .delete(
+          `${api}/teachers/cancel/${this.requisition_to_be_deleted}`,
+          config
+        )
+        .then((res) => {
+          console.log(res);
+          this.loading = false;
+          this.requisition_to_be_deleted = null;
+          window.scrollTo(0, 0);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
     },
   },
   computed: {

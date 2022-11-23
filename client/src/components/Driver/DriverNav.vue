@@ -3,12 +3,15 @@
     <v-navigation-drawer v-model="drawer" app left>
       <template v-slot:prepend>
         <v-list-item two-line>
-          <v-list-item-avatar>
-            <img src="../../assets/gettyimages-1257324726-612x612.jpg" />
+          <v-list-item-avatar v-if="user_photo">
+            <img :src="`${path}${user_photo}`" alt="photo.png" />
+          </v-list-item-avatar>
+          <v-list-item-avatar v-else
+            ><div class="no-photo">{{ initial }}</div>
           </v-list-item-avatar>
 
           <v-list-item-content>
-            <v-list-item-title>Monir Hossain</v-list-item-title>
+            <v-list-item-title>{{ username }}</v-list-item-title>
             <v-list-item-subtitle>Logged In</v-list-item-subtitle>
           </v-list-item-content>
         </v-list-item>
@@ -53,7 +56,13 @@
 
 <script>
 export default {
+  props: ["username", "user_photo"],
+  created() {
+    this.initial = this.$store.getters["auth/user"][0].toUpperCase();
+  },
   data: () => ({
+    path: "http://localhost:5000/",
+    initial: "",
     drawer: true,
     items: [
       {
@@ -62,17 +71,22 @@ export default {
         to: "/driver-home",
       },
       {
-        title: "Update Schedule",
-        icon: "mdi-book-clock-outline",
-        to: "/driver-update-schedule",
-      },
-      {
         title: "Completed Requisitons",
         icon: "mdi-check-circle-outline",
         to: "/driver-completed-requisitions",
       },
-      { title: "My Account", icon: "mdi-account" },
+      { title: "My Account", icon: "mdi-account", to: "driver-account" },
     ],
   }),
 };
 </script>
+<style scoped>
+.no-photo {
+  background-color: teal;
+  color: white;
+  width: 100%;
+  height: 100%;
+  font-size: 25px;
+  padding-top: 4px;
+}
+</style>

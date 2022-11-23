@@ -88,5 +88,8 @@ export default {
         console.log(e);
       }
     },
+    async updateAteacher({ commit }, credentials) {
+      commit("SET_USER", credentials.username);
+    },
   },
 };

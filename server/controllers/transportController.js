@@ -1,4 +1,8 @@
+const sharp = require("sharp");
 const pool = require("../db");
+const filterObj = require("../utils/filterObj");
+const multer = require("multer");
+const bcrypt = require("bcryptjs");
 const AppError = require("../utils/AppError");
 const catchAsync = require("../utils/catchAsync");
 const twilio = require("twilio");
@@ -55,6 +59,12 @@ exports.grantARequisition = catchAsync(async (req, res, next) => {
   const getDriverQuery = `select * from drivers where id=${driver_id}`;
   const fetchedRequisition = await pool.execute(getRequisitionQuery);
   const requisition = fetchedRequisition[0][0];
+
+  const teacher_id = requisition.teacher_id;
+  const getTeacherQuery = `select * from teachers where id=${teacher_id}`;
+  const fetchedTeacher = await pool.execute(getTeacherQuery);
+  const teacher_name = fetchedTeacher[0][0].fullname;
+
   const fetchedDriver = await pool.execute(getDriverQuery);
   const driver = fetchedDriver[0][0];
   const alterQuery = `UPDATE requisitions
@@ -69,7 +79,7 @@ exports.grantARequisition = catchAsync(async (req, res, next) => {
   );
 
   selected_date = requisition.selected_date;
-  const date = selected_date.getUTCDate();
+  const date = selected_date.getUTCDate() + 1;
   const month = selected_date.getUTCMonth() + 1;
   const year = selected_date.getUTCFullYear();
 
@@ -81,7 +91,7 @@ exports.grantARequisition = catchAsync(async (req, res, next) => {
     "+8801819439269",
     `A requisition granted for ${requisition.destination} on ${
       date + "/" + month + "/" + year
-    } ${formatStartTime(requisition.start_time)}`
+    } ${formatStartTime(requisition.start_time)} for ${teacher_name}`
   );
 
   res.status(200).json({
@@ -271,7 +281,84 @@ exports.markCompleted = catchAsync(async (req, res, next) => {
 
   query = "update requisitions set status='completed' where id=?";
   await pool.execute(query, [id]);
+
+  query = `select * from teachers inner join requisitions on teachers.id=requisitions.teacher_id where requisitions.id=${id}`;
+  const teacher = await pool.execute(query);
+  const teacher_id = teacher[0][0].id;
+
+  const newTrip = {
+    requisition_id: id,
+    teacher_id,
+  };
+  console.log(newTrip);
+  const completed = await pool.query("INSERT INTO trip SET ?", newTrip);
+  console.log(completed);
   res.status(200).json({
     message: "successfully updated",
+    completed,
+  });
+});
+
+// Updating User
+const multerStorage = multer.memoryStorage();
+const multerFilter = (req, file, cb) => {
+  if (file.mimetype.startsWith("image")) {
+    cb(null, true);
+  } else {
+    cb(new AppError("Not an image! Please upload only images.", 400), false);
+  }
+};
+
+const upload = multer({
+  storage: multerStorage,
+  fileFilter: multerFilter,
+});
+
+exports.uploadUserPhoto = upload.single("user_photo");
+
+exports.resizeUserPhoto = catchAsync(async (req, res, next) => {
+  if (!req.file) return next();
+
+  req.file.filename = `transport-${Date.now()}.jpeg`;
+
+  await sharp(req.file.buffer)
+    .resize(500, 500)
+    .toFormat("jpeg")
+    .jpeg({ quality: 90 })
+    .toFile(`img/transport-officials/${req.file.filename}`);
+
+  next();
+});
+
+exports.updateTransport = catchAsync(async (req, res, next) => {
+  const filteredBody = filterObj(
+    req.body,
+    "username",
+    "fullname",
+    "phone",
+    "email",
+    "password",
+    "user_photo"
+  );
+  if (req.file) filteredBody.user_photo = req.file.filename;
+
+  //Hashing Password
+  if (filteredBody.password) {
+    const salt = bcrypt.genSaltSync(12);
+    const hash = bcrypt.hashSync(filteredBody.password, salt);
+    filteredBody.password = hash;
+  }
+  let username_query = "SELECT * FROM transport_section WHERE id=?";
+  let any_user = await pool.query(username_query, [req.user]);
+  // console.log(any_user[0]);
+  // if (any_user[0].length > 0) {
+  //   if (req.user != filteredBody.username)
+  //     return next(new AppError("Invalid username", 404));
+  // }
+  let update_query = "UPDATE transport_section SET ? WHERE id = ?";
+  await pool.query(update_query, [filteredBody, req.user]);
+
+  res.status(200).json({
+    status: "successfully updated",
   });
 });

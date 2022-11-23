@@ -1,4 +1,8 @@
+const sharp = require("sharp");
 const pool = require("../db");
+const filterObj = require("../utils/filterObj");
+const multer = require("multer");
+const bcrypt = require("bcryptjs");
 const AppError = require("../utils/AppError");
 const catchAsync = require("../utils/catchAsync");
 
@@ -91,5 +95,71 @@ exports.markCompleted = catchAsync(async (req, res, next) => {
   const users = await pool.execute(query, [id]);
   res.status(200).json({
     message: "successfully updated",
+  });
+});
+
+// Updating User
+const multerStorage = multer.memoryStorage();
+const multerFilter = (req, file, cb) => {
+  if (file.mimetype.startsWith("image")) {
+    cb(null, true);
+  } else {
+    cb(new AppError("Not an image! Please upload only images.", 400), false);
+  }
+};
+
+const upload = multer({
+  storage: multerStorage,
+  fileFilter: multerFilter,
+});
+
+exports.uploadUserPhoto = upload.single("user_photo");
+
+exports.resizeUserPhoto = catchAsync(async (req, res, next) => {
+  if (!req.file) return next();
+
+  req.file.filename = `teacher-${Date.now()}.jpeg`;
+
+  await sharp(req.file.buffer)
+    .resize(500, 500)
+    .toFormat("jpeg")
+    .jpeg({ quality: 90 })
+    .toFile(`img/teachers/${req.file.filename}`);
+
+  next();
+});
+
+exports.updateTeacher = catchAsync(async (req, res, next) => {
+  const filteredBody = filterObj(
+    req.body,
+    "username",
+    "fullname",
+    "phone",
+    "email",
+    "department",
+    "designation",
+    "password",
+    "user_photo"
+  );
+  if (req.file) filteredBody.user_photo = req.file.filename;
+
+  //Hashing Password
+  if (filteredBody.password) {
+    const salt = bcrypt.genSaltSync(12);
+    const hash = bcrypt.hashSync(filteredBody.password, salt);
+    filteredBody.password = hash;
+  }
+  let username_query = "SELECT * FROM teachers WHERE id=?";
+  let any_user = await pool.query(username_query, [req.user]);
+  // console.log(any_user[0]);
+  // if (any_user[0].length > 0) {
+  //   if (req.user != filteredBody.username)
+  //     return next(new AppError("Invalid username", 404));
+  // }
+  let update_query = "UPDATE teachers SET ? WHERE id = ?";
+  await pool.query(update_query, [filteredBody, req.user]);
+
+  res.status(200).json({
+    status: "successfully updated",
   });
 });

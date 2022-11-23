@@ -6,97 +6,116 @@
         <br />
       </div>
     </v-expand-transition>
-    <teacher-nav :username="username">
+    <teacher-nav :username="username" :user_photo="user_photo">
       <template>
         <v-toolbar-title>See History</v-toolbar-title>
       </template>
     </teacher-nav>
-    <v-card
-      v-for="requisition in requisitions"
-      :key="requisition.requisition_id"
-      class="ml-12 mt-12"
-      max-width="1000"
-      outlined
-    >
-      <v-card-text class="ml-2">
-        <div class="text-flex">
-          <div class="mb-2">{{ requisition.created_at }}</div>
-          <div style="margin-right: 25px">
-            Requisition ID #{{ requisition.requisition_id }}
+
+    <div v-if="!empty">
+      <v-card
+        v-for="requisition in requisitions"
+        :key="requisition.requisition_id"
+        class="ml-12 mt-12"
+        max-width="1000"
+        outlined
+      >
+        <v-card-text class="ml-2">
+          <div class="text-flex">
+            <div class="mb-2">{{ requisition.created_at }}</div>
+            <div style="margin-right: 25px">
+              Requisition ID #{{ requisition.requisition_id }}
+            </div>
           </div>
-        </div>
 
-        <p class="text-h5 text--primary">You Have Submitted a Requisition</p>
-        <p class="text--primary mb-0">
-          Date: {{ requisition.selected_date }} ~ {{ requisition.start_time }} -
-          {{ requisition.end_time }}
-        </p>
-        <p class="text--primary mb-0">
-          Destination: {{ requisition.destination }}
-        </p>
-      </v-card-text>
-      <v-card-actions class="mb-2 ml-2">
-        <v-btn
-          :class="cancelClass(requisition.status)"
-          outlined
-          color="red darken-1"
-          @click="openDialog(requisition.requisition_id)"
-        >
-          Cancel</v-btn
-        >
-        <div v-if="requisition.status === 'granted'">
-          <div class="status-granted">Status: {{ requisition.status }}</div>
-        </div>
+          <p class="text-h5 text--primary">You Have Submitted a Requisition</p>
+          <p class="text--primary mb-0">
+            Date: {{ requisition.selected_date }} ~
+            {{ requisition.start_time }} -
+            {{ requisition.end_time }}
+          </p>
+          <p class="text--primary mb-0">
+            Destination: {{ requisition.destination }}
+          </p>
+        </v-card-text>
+        <v-card-actions class="mb-2 ml-2">
+          <v-btn
+            :class="cancelClass(requisition.status)"
+            outlined
+            color="red darken-1"
+            @click="openDialog(requisition.requisition_id)"
+          >
+            Cancel</v-btn
+          >
+          <div v-if="requisition.status === 'granted'">
+            <div class="status-granted">Status: {{ requisition.status }}</div>
+          </div>
 
-        <div
-          v-else-if="requisition.status === 'pending'"
-          class="status-pending"
-        >
-          Status: {{ requisition.status }}
-        </div>
-        <div
-          v-else-if="requisition.status === 'rejected'"
-          class="status-rejected"
-        >
-          Status: {{ requisition.status }}
-        </div>
-        <div
-          v-else-if="requisition.status === 'completed'"
-          class="status-completed"
-        >
-          Status: {{ requisition.status }}
-        </div>
-        <router-link
-          v-if="requisition.status === 'pending'"
-          class="details"
-          :to="'/transport-home/' + requisition.requisition_id"
-        >
-          <v-btn outlined color="indigo" class="details">See Details</v-btn>
-        </router-link>
+          <div
+            v-else-if="requisition.status === 'pending'"
+            class="status-pending"
+          >
+            Status: {{ requisition.status }}
+          </div>
+          <div
+            v-else-if="requisition.status === 'rejected'"
+            class="status-rejected"
+          >
+            Status: {{ requisition.status }}
+          </div>
+          <div
+            v-else-if="requisition.status === 'completed'"
+            class="status-completed"
+          >
+            Status: {{ requisition.status }}
+          </div>
+          <router-link
+            v-if="requisition.status === 'pending'"
+            class="details"
+            :to="'/transport-home/' + requisition.requisition_id"
+          >
+            <v-btn outlined color="indigo" class="details">See Details</v-btn>
+          </router-link>
 
-        <router-link
-          v-if="requisition.status === 'granted'"
-          class="details"
-          :to="'/transport-home/granted/' + requisition.requisition_id"
-        >
-          <v-btn outlined color="indigo" class="details">See Details</v-btn>
-        </router-link>
-        <router-link
-          v-if="requisition.status === 'rejected'"
-          class="details"
-          :to="'/transport-home/rejected/' + requisition.requisition_id"
-        >
-          <v-btn outlined color="indigo" class="details">See Details</v-btn>
-        </router-link>
-        <router-link
-          v-if="requisition.status === 'completed'"
-          class="details"
-          :to="'/transport-home/granted/' + requisition.requisition_id"
-        >
-          <v-btn outlined color="indigo" class="details">See Details</v-btn>
-        </router-link>
-      </v-card-actions>
-    </v-card>
+          <router-link
+            v-if="requisition.status === 'granted'"
+            class="details"
+            :to="'/transport-home/granted/' + requisition.requisition_id"
+          >
+            <v-btn outlined color="indigo" class="details">See Details</v-btn>
+          </router-link>
+          <router-link
+            v-if="requisition.status === 'rejected'"
+            class="details"
+            :to="'/transport-home/rejected/' + requisition.requisition_id"
+          >
+            <v-btn outlined color="indigo" class="details">See Details</v-btn>
+          </router-link>
+          <router-link
+            v-if="requisition.status === 'completed'"
+            class="details"
+            :to="'/transport-home/granted/' + requisition.requisition_id"
+          >
+            <v-btn outlined color="indigo" class="details">See Details</v-btn>
+          </router-link>
+        </v-card-actions>
+      </v-card>
+    </div>
+
+    <div v-if="empty">
+      <div class="divv">
+        <img
+          class="image-schedule"
+          src="../../../public/assets/Raining-bro.png"
+          alt="pickup.png"
+        />
+        <h2 class="divv-h1">
+          Nothing in your History right now! Start by submitting a Requisition
+          Form !!!
+        </h2>
+      </div>
+    </div>
+
     <v-row justify="center">
       <v-dialog v-model="dialog" persistent max-width="400">
         <v-card>
@@ -129,6 +148,24 @@ export default {
     const config = {
       headers: { Authorization: `Bearer ${this.$store.getters["auth/token"]}` },
     };
+    const user = {
+      username: this.$store.getters["auth/user"],
+      role: this.$store.getters["auth/role"],
+    };
+
+    axios
+      .post(`${api}/users/me`, user, config)
+      .then((res) => {
+        if (res.data.data[0].user_photo != null)
+          this.user_photo = res.data.data[0].user_photo;
+
+        if (this.user_photo === "user.png") {
+          this.user_photo = null;
+        }
+      })
+      .catch((err) => {
+        console.log(err);
+      });
     this.username = this.$store.getters["auth/user"];
     axios
       .get(`${api}/teachers/history`, config)
@@ -136,6 +173,11 @@ export default {
         this.loading = false;
         console.log(res);
         this.requisitions = res.data.data;
+        if (res.data.total === 0) {
+          this.empty = true;
+        } else {
+          this.empty = false;
+        }
 
         TimeAgo.addDefaultLocale(en);
 
@@ -163,6 +205,8 @@ export default {
       loading: true,
       username: "",
       dialog: false,
+      empty: false,
+      user_photo: null,
     };
   },
   methods: {
@@ -254,5 +298,16 @@ a {
 .details {
   margin-left: auto;
   margin-right: 12px;
+}
+.image-schedule {
+  max-width: 500px;
+}
+.divv {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.divv-h1 {
+  color: #258685;
 }
 </style>
