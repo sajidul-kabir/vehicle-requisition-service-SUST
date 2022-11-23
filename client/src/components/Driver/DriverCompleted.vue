@@ -14,7 +14,7 @@
     <v-card
       v-for="requisition in requisitions"
       :key="requisition.id"
-      class="ml-12 mt-6"
+      class="mt-6 sm:ml-12 "
       max-width="1000"
       outlined
     >
@@ -33,7 +33,7 @@
         </p>
       </v-card-text>
       <v-card-actions class="mb-2 ml-2">
-        <div class="status-completed">Status: Completed</div>
+        <div class="status-completed flex-inline">Status: Completed</div>
         <router-link
           class="details"
           :to="'/transport-home/granted/' + requisition.id"

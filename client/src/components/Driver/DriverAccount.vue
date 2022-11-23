@@ -12,10 +12,10 @@
       </template>
     </driver-nav>
     <div class="profile">
-      <div class="divider-section"></div>
-      <div class="public-profile">
+      <div class="divider-section md:mr-40"></div>
+      <div class="public-profile flex flex-col justify-center mx-8 md:mx-0">
         <h2 class="profile-h2">Public Profile</h2>
-        <div class="public-profile-photo">
+        <div class="public-profile-photo flex flex-row flex-wrap">
           <div class="public-profile-photo-pic">
             <v-avatar color="grey lighten-1" size="150">
               <div
@@ -58,7 +58,7 @@
             </div>
           </div>
         </div>
-        <form class="body-container-form__form" @submit.prevent="profileUpdate">
+        <form class="body-container-form__form md:left-5" @submit.prevent="profileUpdate">
           <div class="user-box">
             <input
               :style="[
@@ -322,7 +322,6 @@ export default {
   border-right: 1px groove;
   height: 406px;
   top: 190px;
-  margin-right: 150px;
 }
 .invalid {
   margin: 0;
@@ -364,7 +363,6 @@ export default {
 .body-container-form__form {
   margin-top: 55px;
   position: relative;
-  left: 20px;
 }
 .user-box {
   position: relative;
