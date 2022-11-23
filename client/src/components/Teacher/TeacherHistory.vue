@@ -16,7 +16,7 @@
       <v-card
         v-for="requisition in requisitions"
         :key="requisition.requisition_id"
-        class="ml-12 mt-12"
+        class="mt-12 sm:ml-12"
         max-width="1000"
         outlined
       >
@@ -38,7 +38,7 @@
             Destination: {{ requisition.destination }}
           </p>
         </v-card-text>
-        <v-card-actions class="mb-2 ml-2">
+        <v-card-actions class="mb-2 ml-2 flex md:flex-row flex-col-reverse gap-3 justify-start items-start">
           <v-btn
             :class="cancelClass(requisition.status)"
             outlined
@@ -47,6 +47,7 @@
           >
             Cancel</v-btn
           >
+          <div class="flex md:flex-row gap-3">
           <div v-if="requisition.status === 'granted'">
             <div class="status-granted">Status: {{ requisition.status }}</div>
           </div>
@@ -76,7 +77,7 @@
           >
             <v-btn outlined color="indigo" class="details">See Details</v-btn>
           </router-link>
-
+          
           <router-link
             v-if="requisition.status === 'granted'"
             class="details"
@@ -98,6 +99,7 @@
           >
             <v-btn outlined color="indigo" class="details">See Details</v-btn>
           </router-link>
+          </div>
         </v-card-actions>
       </v-card>
     </div>
@@ -263,10 +265,10 @@ a {
   margin-bottom: 15px;
 }
 .status-granted {
+  width: fit-content;
   border: 1px solid;
   padding: 5px 15px;
   color: #66bb6a;
-  margin-left: 20px;
   border-radius: 20px;
   background: #4caf500f;
 }
@@ -277,7 +279,6 @@ a {
   border: 1px solid;
   padding: 5px 15px;
   color: #706b6b;
-  margin-left: 20px;
   border-radius: 20px;
   background: #eeeeeead;
 }

@@ -16,7 +16,7 @@
       <v-card
         v-for="requisition in requisitions"
         :key="requisition.id"
-        class="ml-12 mt-12"
+        class="mt-12 sm:ml-12"
         max-width="1000"
         elevation="2"
         outlined
@@ -61,7 +61,7 @@
             Assigned Driver: {{ requisition.driver_name }}
           </p>
         </v-card-text>
-        <v-card-actions class="mb-2 ml-2">
+        <v-card-actions class="mb-2 ml-2 flex md:flex-row flex-col-reverse gap-3 justify-start items-start">
           <v-btn
             outlined
             color="red darken-1"
@@ -69,13 +69,12 @@
           >
             Cancel</v-btn
           >
-          <div class="status">Status: Granted</div>
-          <router-link
-            class="details"
-            :to="'/transport-home/granted/' + requisition.id"
-          >
-            <v-btn outlined color="indigo" class="details">See Details</v-btn>
-          </router-link>
+          <div class="flex md:flex-row gap-3">
+            <div class="status">Status: Granted</div>
+            <router-link class="details" :to="'/transport-home/granted/' + requisition.id">
+              <v-btn outlined color="indigo" class="details">See Details</v-btn>
+            </router-link>
+          </div>
         </v-card-actions>
       </v-card>
     </div>
@@ -261,7 +260,6 @@ a {
   border: 1px solid;
   padding: 5px 15px;
   color: #66bb6a;
-  margin-left: 20px;
   border-radius: 20px;
   background: #4caf500f;
 }
