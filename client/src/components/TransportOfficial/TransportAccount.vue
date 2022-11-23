@@ -12,16 +12,13 @@
       </template>
     </transport-nav>
     <div class="profile">
-      <div class="divider-section"></div>
-      <div class="public-profile">
+      <div class="divider-section md:mr-40"></div>
+      <div class="public-profile flex flex-col justify-center mx-8 md:mx-0">
         <h2 class="profile-h2">Public Profile</h2>
-        <div class="public-profile-photo">
+        <div class="public-profile-photo flex flex-row flex-wrap">
           <div class="public-profile-photo-pic">
             <v-avatar color="grey lighten-1" size="150">
-              <div
-                class="profile-img"
-                :style="{ backgroundImage: `url('${getProfilePhoto()}')` }"
-              ></div>
+              <div class="profile-img" :style="{ backgroundImage: `url('${getProfilePhoto()}')` }"></div>
               <!-- <img
                   class="img-circle"
                   :src="getProfilePhoto()"
@@ -255,11 +252,13 @@ export default {
   background-color: #eeeeee;
   display: flex;
 }
+
 .profile-h2 {
   margin-top: 70px;
   margin-bottom: 25px;
   font-weight: 800;
 }
+
 .settings {
   width: 35%;
 }
@@ -271,20 +270,24 @@ export default {
   align-items: center;
   margin-top: 60px;
 }
+
 .settings-holder p {
   margin: 10px 0px;
   border: 1px solid #2b282c54;
   padding: 10px 35px;
   border-radius: 6px;
 }
+
 .settings-holder p:hover {
   cursor: pointer;
   background-color: rgb(220, 216, 216);
 }
+
 .settings-holder h2 {
   margin-bottom: 30px;
   font-size: 32px;
 }
+
 .log-out {
   margin-top: 50px;
   /* border-style: solid; */
@@ -296,13 +299,14 @@ export default {
   font-weight: 600;
   box-shadow: 1px 2px 6px red;
 }
+
 .divider-section {
   position: relative;
   border-right: 1px groove;
   height: 406px;
   top: 190px;
-  margin-right: 150px;
 }
+
 .invalid {
   margin: 0;
   color: red;
@@ -311,15 +315,18 @@ export default {
   font-size: 12px;
   left: 20px;
 }
+
 .invalidImg {
   width: 13px;
   position: relative;
   bottom: 24px;
 }
+
 .form-buttons {
   margin-top: 28px !important;
   margin-bottom: 25px !important;
 }
+
 .profile-delete-picture {
   color: red;
   font-size: 12px;
@@ -327,12 +334,15 @@ export default {
   padding-bottom: 20px !important;
   padding-top: 18px !important;
 }
+
 .public-profile-photo {
   display: flex;
 }
+
 .public-profile-photo-pic {
   margin-right: 55px;
 }
+
 .profile-img {
   width: 150px;
   background-position: inherit;
@@ -340,11 +350,12 @@ export default {
   background-size: cover;
   background-repeat: no-repeat;
 }
+
 .body-container-form__form {
   margin-top: 55px;
   position: relative;
-  left: 20px;
 }
+
 .user-box {
   position: relative;
 }
@@ -378,8 +389,8 @@ export default {
   border-bottom: 1px solid #2b282c;
 }
 
-.user-box input:focus ~ label,
-.user-box input:valid ~ label {
+.user-box input:focus~label,
+.user-box input:valid~label {
   top: -20px;
   left: 0;
   color: #2b282c;
@@ -397,10 +408,12 @@ export default {
   border-radius: 6px;
   margin-bottom: 90px;
 }
+
 .body-container-form__form button:hover {
   cursor: pointer;
   opacity: 0.9;
 }
+
 .file-custom {
   border: 1px solid;
   font-size: 12p;
@@ -411,10 +424,12 @@ export default {
 
   border-radius: 6px;
 }
+
 .file-custom:hover {
   cursor: pointer;
   box-shadow: 1px 1px 3px black;
 }
+
 input[type="file"] {
   display: none;
 }
