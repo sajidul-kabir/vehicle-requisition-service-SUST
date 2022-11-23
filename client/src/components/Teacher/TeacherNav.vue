@@ -59,6 +59,9 @@ export default {
   props: ["username", "user_photo"],
   created() {
     this.initial = this.$store.getters["auth/user"][0].toUpperCase();
+    if (window.outerWidth < 1200) {
+      this.drawer = false
+    }
   },
   data: () => ({
     drawer: true,
