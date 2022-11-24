@@ -67,7 +67,7 @@
             v-if="requisition.actualStatus === 'completed'"
             class="text-h5 text--primary"
           >
-            Requisition completed
+            Requisition Ended
           </p>
           <p class="text--primary mb-0">
             Date: {{ requisition.selected_date }} ~
@@ -88,7 +88,7 @@
             v-if="requisition.actualStatus === 'completed'"
             class="status-completed"
           >
-            Status: Completed
+            Status: Ended
           </div>
           <div v-else class="status-running">Status: Running</div>
 

@@ -40,7 +40,7 @@
                 :start-label="'Until start:'"
                 :end-label="'Starts in'"
                 label-position="begin"
-                :end-text="'Event ended!'"
+                :end-text="'Requisition Started!'"
                 :day-txt="'days'"
                 :hour-txt="'hours'"
                 :minutes-txt="'minutes'"
@@ -61,7 +61,9 @@
             Assigned Driver: {{ requisition.driver_name }}
           </p>
         </v-card-text>
-        <v-card-actions class="mb-2 ml-2 flex md:flex-row flex-col-reverse gap-3 justify-start items-start">
+        <v-card-actions
+          class="mb-2 ml-2 flex md:flex-row flex-col-reverse gap-3 justify-start items-start"
+        >
           <v-btn
             outlined
             color="red darken-1"
@@ -71,7 +73,10 @@
           >
           <div class="flex md:flex-row gap-3">
             <div class="status">Status: Granted</div>
-            <router-link class="details" :to="'/transport-home/granted/' + requisition.id">
+            <router-link
+              class="details"
+              :to="'/transport-home/granted/' + requisition.id"
+            >
               <v-btn outlined color="indigo" class="details">See Details</v-btn>
             </router-link>
           </div>
