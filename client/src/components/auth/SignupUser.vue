@@ -1,16 +1,16 @@
 <template>
-  <div class="bg-slate-100 min-h-screen h-fit p-4 flex justify-center items-center w-screen">
+  <div class="bg-slate-100 min-h-screen h-fit p-4 flex flex-col gap-3 justify-center items-center w-screen">
+    <div class=" inline-flex items-center gap-3">
+      <img src="../../assets/Shahjalal_University_of_Science_and_Technology_logo.png" width="45px" height="50px"
+        alt="sust_logo.png" />
+      <h1 class="text-xl h-50">Vehicle Requisition Service</h1>
+    </div>
     <form
       class="bg-white w-fit h-fit p-10 rounded-2xl"
       action="sumbit"
       @submit.prevent="SignUpUser"
     >
       <div class="inline-flex items-center gap-4 pb-12">
-        <img
-          src="../../assets/Shahjalal_University_of_Science_and_Technology_logo.png"
-          width="45px"
-          alt="sust_logo.png"
-        />
         <h2 class="font-bold text-2xl" v-if="role === 'teacher'">
           Signup as a Teacher
         </h2>
@@ -237,7 +237,7 @@
           Register
         </span>
       </button>
-      <p class="Login">
+      <p class="mt-7">
         Already have an account ?
         <router-link to="/login">Login</router-link> Here
       </p>

@@ -1,16 +1,16 @@
 <template>
-  <div class="bg-slate-100 min-h-screen h-fit flex justify-center items-center w-screen">
+  <div class="bg-slate-100 min-h-screen h-fit flex flex-col justify-center items-center gap-3 w-screen">
+    <div class=" inline-flex items-center gap-3">
+      <img src="../../assets/Shahjalal_University_of_Science_and_Technology_logo.png" width="45px" height="50px"
+        alt="sust_logo.png" />
+      <h1 class="text-xl h-50">Vehicle Requisition Service</h1>
+    </div>
     <form
       class="bg-white w-fit p-10 rounded-2xl"
       action="sumbit"
       @submit.prevent="loginUser"
     >
       <div class="inline-flex items-center gap-4 pb-12">
-        <img
-          src="../../assets/Shahjalal_University_of_Science_and_Technology_logo.png"
-          width="45px"
-          alt="sust_logo.png"
-        />
         <h2 class="font-bold text-2xl" v-if="role === 'teacher'">
           Login as a Teacher
         </h2>
@@ -247,7 +247,7 @@ a {
   bottom: 15px;
 }
 .register {
-  margin-top: 50px;
+  margin-top: 30px;
   margin-bottom: 0px;
 }
 </style>
