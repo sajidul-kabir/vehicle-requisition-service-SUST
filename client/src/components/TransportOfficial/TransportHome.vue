@@ -33,7 +33,7 @@
       <v-card
         v-for="requisition in requisitions"
         :key="requisition.id"
-        class="ml-12 mt-12"
+        class="md:ml-12 mt-12"
         max-width="1000"
         elevation="2"
         outlined
