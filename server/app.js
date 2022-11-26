@@ -15,7 +15,7 @@ app.use(express.static("img/transport-officials/"));
 app.use(express.static("img/drivers/"));
 app.use(
   cors({
-    origin: ["https://vehicle-requisition-server.onrender.com"],
+    origin: ["https://vehicle-requisition-static.onrender.com"],
     credentials: true,
   })
 );
