@@ -334,7 +334,7 @@ export default {
   }),
   methods: {
     allowedHoursStartTime(v) {
-      if (v >= 8 && v <= 20) {
+      if (v >= 8 && v <= 17) {
         return v;
       }
     },

@@ -238,18 +238,18 @@ exports.getAllAvailableDrivers = catchAsync(async (req, res, next) => {
   });
 });
 
-const sendSms = async (driverPhoneNumber, driverSms) => {
-  const accountSid = process.env.TWILIO_ACCOUNT_SID;
-  const authToken = process.env.TWILIO_AUTH_TOKEN;
-  const client = twilio(accountSid, authToken);
+// const sendSms = async (driverPhoneNumber, driverSms) => {
+//   const accountSid = process.env.TWILIO_ACCOUNT_SID;
+//   const authToken = process.env.TWILIO_AUTH_TOKEN;
+//   const client = twilio(accountSid, authToken);
 
-  let message = await client.messages.create({
-    body: driverSms,
-    from: process.env.TWILIO_NUMBER,
-    to: driverPhoneNumber,
-  });
-  console.log(message);
-};
+//   let message = await client.messages.create({
+//     body: driverSms,
+//     from: process.env.TWILIO_NUMBER,
+//     to: driverPhoneNumber,
+//   });
+//   console.log(message);
+// };
 
 const formatStartTime = (start_time) => {
   time = start_time.split(":");
