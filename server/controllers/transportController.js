@@ -55,18 +55,18 @@ exports.grantARequisition = catchAsync(async (req, res, next) => {
     granted_by: req.user,
   };
 
-  const getRequisitionQuery = `select * from requisitions where id=${requisition_id}`;
-  const getDriverQuery = `select * from drivers where id=${driver_id}`;
-  const fetchedRequisition = await pool.execute(getRequisitionQuery);
-  const requisition = fetchedRequisition[0][0];
+  // const getRequisitionQuery = `select * from requisitions where id=${requisition_id}`;
+  // const getDriverQuery = `select * from drivers where id=${driver_id}`;
+  // const fetchedRequisition = await pool.execute(getRequisitionQuery);
+  // const requisition = fetchedRequisition[0][0];
 
-  const teacher_id = requisition.teacher_id;
-  const getTeacherQuery = `select * from teachers where id=${teacher_id}`;
-  const fetchedTeacher = await pool.execute(getTeacherQuery);
-  const teacher_name = fetchedTeacher[0][0].fullname;
+  // const teacher_id = requisition.teacher_id;
+  // const getTeacherQuery = `select * from teachers where id=${teacher_id}`;
+  // const fetchedTeacher = await pool.execute(getTeacherQuery);
+  // const teacher_name = fetchedTeacher[0][0].fullname;
 
-  const fetchedDriver = await pool.execute(getDriverQuery);
-  const driver = fetchedDriver[0][0];
+  // const fetchedDriver = await pool.execute(getDriverQuery);
+  // const driver = fetchedDriver[0][0];
   const alterQuery = `UPDATE requisitions
   SET status = 'granted'
   WHERE id = ${requisition_id}`;
@@ -78,21 +78,21 @@ exports.grantARequisition = catchAsync(async (req, res, next) => {
     newGrantedRequisition
   );
 
-  selected_date = requisition.selected_date;
-  const date = selected_date.getUTCDate() + 1;
-  const month = selected_date.getUTCMonth() + 1;
-  const year = selected_date.getUTCFullYear();
+  // selected_date = requisition.selected_date;
+  // const date = selected_date.getUTCDate() + 1;
+  // const month = selected_date.getUTCMonth() + 1;
+  // const year = selected_date.getUTCFullYear();
 
   //TODO add drivers number after getting a paid account from twilio
 
-  driverPhoneNumber = driver.phone;
+  //driverPhoneNumber = driver.phone;
 
-  await sendSms(
-    "+8801819439269",
-    `A requisition granted for ${requisition.destination} on ${
-      date + "/" + month + "/" + year
-    } ${formatStartTime(requisition.start_time)} for ${teacher_name}`
-  );
+  // await sendSms(
+  //   "+8801819439269",
+  //   `A requisition granted for ${requisition.destination} on ${
+  //     date + "/" + month + "/" + year
+  //   } ${formatStartTime(requisition.start_time)} for ${teacher_name}`
+  // );
 
   res.status(200).json({
     message: "successfully granted",
