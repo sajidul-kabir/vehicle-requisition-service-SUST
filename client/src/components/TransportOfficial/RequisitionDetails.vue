@@ -331,11 +331,13 @@ export default {
       axios
         .post(`${api}/transport/pending/reject`, obj, config)
         .then((res) => {
+          console.log("REJECTTTT");
           console.log(res);
           this.loading = false;
           this.$router.push("/rejected-requisitions");
         })
         .catch((err) => {
+          console.log("ERRORRR");
           console.log(err);
         });
     },
