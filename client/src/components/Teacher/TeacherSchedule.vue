@@ -177,6 +177,8 @@ export default {
             Date.parse(xdate.toLocaleString()) +
             parseInt(yHour) * 60 * 60 * 1000 +
             parseInt(yMin) * 60 * 1000;
+
+          requisition.special = requisition.special - 6 * 60 * 60 * 1000;
         });
       })
       .catch((err) => {
