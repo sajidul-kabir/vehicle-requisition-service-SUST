@@ -14,7 +14,7 @@
     <v-card
       v-for="requisition in requisitions"
       :key="requisition.id"
-      class="mt-6 sm:ml-12 "
+      class="mt-6 sm:ml-12"
       max-width="1000"
       outlined
     >
@@ -86,9 +86,7 @@ export default {
         TimeAgo.addDefaultLocale(en);
         this.requisitions.forEach((requisition) => {
           const timeAgo = new TimeAgo("en-US");
-          let date = timeAgo.format(
-            Date.parse(requisition.created_at) + 6 * 60 * 60 * 1000
-          );
+          let date = timeAgo.format(Date.parse(requisition.created_at));
           console.log(date);
           requisition.created_at = date;
 

@@ -29,8 +29,7 @@
       <v-card
         v-for="requisition in requisitions"
         :key="requisition.id"
-        
-         class="mt-12 md:ml-12"
+        class="mt-12 md:ml-12"
         max-width="1000"
         outlined
       >
@@ -84,7 +83,9 @@
             Destination: {{ requisition.destination }}
           </p>
         </v-card-text>
-        <v-card-actions class=" mb-2 ml-2 flex md:flex-row flex-col gap-5 justify-start items-start">
+        <v-card-actions
+          class="mb-2 ml-2 flex md:flex-row flex-col gap-5 justify-start items-start"
+        >
           <div
             v-if="requisition.actualStatus === 'completed'"
             class="status-completed"
@@ -94,10 +95,19 @@
           <div v-else class="status-running">Status: Running</div>
 
           <div class="flex md:flex-row gap-0">
-            <router-link class="details" :to="'/transport-home/granted/' + requisition.id">
+            <router-link
+              class="details"
+              :to="'/transport-home/granted/' + requisition.id"
+            >
               <v-btn outlined color="indigo" class="details">See Details</v-btn>
             </router-link>
-            <v-btn outlined color="indigo" class="pendingComplete" @click="openDialog(requisition.id)">Mark as Completed</v-btn>
+            <v-btn
+              outlined
+              color="indigo"
+              class="pendingComplete"
+              @click="openDialog(requisition.id)"
+              >Mark as Completed</v-btn
+            >
           </div>
         </v-card-actions>
       </v-card>
@@ -210,9 +220,7 @@ export default {
             requisition.actualStatus = "completed";
           }
           //console.log(requisition.actualStatus);
-          let date = timeAgo.format(
-            Date.parse(requisition.created_at) + 6 * 60 * 60 * 1000
-          );
+          let date = timeAgo.format(Date.parse(requisition.created_at));
           requisition.created_at = date;
 
           var xdate = new Date(requisition.selected_date);

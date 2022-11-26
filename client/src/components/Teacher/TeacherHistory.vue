@@ -38,7 +38,9 @@
             Destination: {{ requisition.destination }}
           </p>
         </v-card-text>
-        <v-card-actions class="mb-2 ml-2 flex md:flex-row flex-col-reverse gap-3 justify-start items-start">
+        <v-card-actions
+          class="mb-2 ml-2 flex md:flex-row flex-col-reverse gap-3 justify-start items-start"
+        >
           <v-btn
             :class="cancelClass(requisition.status)"
             outlined
@@ -48,57 +50,57 @@
             Cancel</v-btn
           >
           <div class="flex md:flex-row gap-3">
-          <div v-if="requisition.status === 'granted'">
-            <div class="status-granted">Status: {{ requisition.status }}</div>
-          </div>
+            <div v-if="requisition.status === 'granted'">
+              <div class="status-granted">Status: {{ requisition.status }}</div>
+            </div>
 
-          <div
-            v-else-if="requisition.status === 'pending'"
-            class="status-pending"
-          >
-            Status: {{ requisition.status }}
-          </div>
-          <div
-            v-else-if="requisition.status === 'rejected'"
-            class="status-rejected"
-          >
-            Status: {{ requisition.status }}
-          </div>
-          <div
-            v-else-if="requisition.status === 'completed'"
-            class="status-completed"
-          >
-            Status: {{ requisition.status }}
-          </div>
-          <router-link
-            v-if="requisition.status === 'pending'"
-            class="details"
-            :to="'/transport-home/' + requisition.requisition_id"
-          >
-            <v-btn outlined color="indigo" class="details">See Details</v-btn>
-          </router-link>
-          
-          <router-link
-            v-if="requisition.status === 'granted'"
-            class="details"
-            :to="'/transport-home/granted/' + requisition.requisition_id"
-          >
-            <v-btn outlined color="indigo" class="details">See Details</v-btn>
-          </router-link>
-          <router-link
-            v-if="requisition.status === 'rejected'"
-            class="details"
-            :to="'/transport-home/rejected/' + requisition.requisition_id"
-          >
-            <v-btn outlined color="indigo" class="details">See Details</v-btn>
-          </router-link>
-          <router-link
-            v-if="requisition.status === 'completed'"
-            class="details"
-            :to="'/transport-home/granted/' + requisition.requisition_id"
-          >
-            <v-btn outlined color="indigo" class="details">See Details</v-btn>
-          </router-link>
+            <div
+              v-else-if="requisition.status === 'pending'"
+              class="status-pending"
+            >
+              Status: {{ requisition.status }}
+            </div>
+            <div
+              v-else-if="requisition.status === 'rejected'"
+              class="status-rejected"
+            >
+              Status: {{ requisition.status }}
+            </div>
+            <div
+              v-else-if="requisition.status === 'completed'"
+              class="status-completed"
+            >
+              Status: {{ requisition.status }}
+            </div>
+            <router-link
+              v-if="requisition.status === 'pending'"
+              class="details"
+              :to="'/transport-home/' + requisition.requisition_id"
+            >
+              <v-btn outlined color="indigo" class="details">See Details</v-btn>
+            </router-link>
+
+            <router-link
+              v-if="requisition.status === 'granted'"
+              class="details"
+              :to="'/transport-home/granted/' + requisition.requisition_id"
+            >
+              <v-btn outlined color="indigo" class="details">See Details</v-btn>
+            </router-link>
+            <router-link
+              v-if="requisition.status === 'rejected'"
+              class="details"
+              :to="'/transport-home/rejected/' + requisition.requisition_id"
+            >
+              <v-btn outlined color="indigo" class="details">See Details</v-btn>
+            </router-link>
+            <router-link
+              v-if="requisition.status === 'completed'"
+              class="details"
+              :to="'/transport-home/granted/' + requisition.requisition_id"
+            >
+              <v-btn outlined color="indigo" class="details">See Details</v-btn>
+            </router-link>
           </div>
         </v-card-actions>
       </v-card>
@@ -185,9 +187,7 @@ export default {
 
         this.requisitions.forEach((requisition) => {
           const timeAgo = new TimeAgo("en-US");
-          let date = timeAgo.format(
-            Date.parse(requisition.created_at) + 6 * 60 * 60 * 1000
-          );
+          let date = timeAgo.format(Date.parse(requisition.created_at));
           requisition.created_at = date;
 
           var xdate = new Date(requisition.selected_date);

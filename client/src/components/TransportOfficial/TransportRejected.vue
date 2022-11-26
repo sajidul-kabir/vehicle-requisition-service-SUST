@@ -133,9 +133,7 @@ export default {
 
         this.requisitions.forEach((requisition) => {
           const timeAgo = new TimeAgo("en-US");
-          let date = timeAgo.format(
-            Date.parse(requisition.created_at) + 6 * 60 * 60 * 1000
-          );
+          let date = timeAgo.format(Date.parse(requisition.created_at));
           requisition.created_at = date;
 
           var xdate = new Date(requisition.selected_date);

@@ -56,7 +56,9 @@
             Destination: {{ requisition.destination }}
           </p>
         </v-card-text>
-        <v-card-actions class="mb-2 ml-2 flex md:flex-row flex-col-reverse gap-5 justify-start items-start">
+        <v-card-actions
+          class="mb-2 ml-2 flex md:flex-row flex-col-reverse gap-5 justify-start items-start"
+        >
           <v-btn
             outlined
             color="red darken-1"
@@ -66,8 +68,11 @@
           >
           <div class="flex md:flex-row gap-3">
             <div class="status-granted md:ml-5">Status: Granted</div>
-            
-            <router-link class="details" :to="'/transport-home/granted/' + requisition.id">
+
+            <router-link
+              class="details"
+              :to="'/transport-home/granted/' + requisition.id"
+            >
               <v-btn outlined color="indigo" class="details">See Details</v-btn>
             </router-link>
           </div>
@@ -160,9 +165,7 @@ export default {
 
         this.requisitions.forEach((requisition) => {
           const timeAgo = new TimeAgo("en-US");
-          let date = timeAgo.format(
-            Date.parse(requisition.created_at) + 6 * 60 * 60 * 1000
-          );
+          let date = timeAgo.format(Date.parse(requisition.created_at));
           requisition.created_at = date;
 
           var xdate = new Date(requisition.selected_date);
