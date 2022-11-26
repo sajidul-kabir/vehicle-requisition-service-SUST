@@ -111,13 +111,14 @@ exports.rejectARequisition = catchAsync(async (req, res, next) => {
   SET status = 'rejected'
   WHERE id = ${requisition_id}`;
 
-  await pool.execute(alterQuery);
+  const updated = await pool.execute(alterQuery);
+  console.log(updated);
 
-  const alterQuery2 = `UPDATE requisitions
-  SET created_at = ${Date.now()}
-  WHERE id = ${requisition_id}`;
+  // const alterQuery2 = `UPDATE requisitions
+  // SET created_at = ${Date.now()}
+  // WHERE id = ${requisition_id}`;
 
-  await pool.execute(alterQuery2);
+  // await pool.execute(alterQuery2);
 
   res.status(200).json({
     message: "rejected",
