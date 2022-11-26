@@ -60,11 +60,11 @@ export default {
   created() {
     this.initial = this.$store.getters["auth/user"][0].toUpperCase();
     if (window.outerWidth < 1200) {
-      this.drawer=false
+      this.drawer = false;
     }
   },
   data: () => ({
-    path: "http://localhost:5000/",
+    path: "https://vehicle-requisition-server.onrender.com/",
     initial: "",
     drawer: true,
     items: [

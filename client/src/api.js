@@ -1,2 +1,2 @@
-const api = "http://localhost:5000/api";
+const api = "https://vehicle-requisition-server.onrender.com/api";
 module.exports = api;

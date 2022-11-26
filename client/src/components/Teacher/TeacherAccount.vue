@@ -18,7 +18,10 @@
         <div class="public-profile-photo flex flex-row flex-wrap">
           <div class="public-profile-photo-pic">
             <v-avatar color="grey lighten-1" size="150">
-              <div class="profile-img" :style="{ backgroundImage: `url('${getProfilePhoto()}')` }"></div>
+              <div
+                class="profile-img"
+                :style="{ backgroundImage: `url('${getProfilePhoto()}')` }"
+              ></div>
               <!-- <img
                 class="img-circle"
                 :src="getProfilePhoto()"
@@ -55,7 +58,10 @@
             </div>
           </div>
         </div>
-        <form class="body-container-form__form md:left-5" @submit.prevent="profileUpdate">
+        <form
+          class="body-container-form__form md:left-5"
+          @submit.prevent="profileUpdate"
+        >
           <div class="user-box">
             <input
               :style="[
@@ -172,7 +178,7 @@ export default {
     }),
     // logout() {
     //   axios
-    //     .get(`http://localhost:5000/api/users/logout`)
+    //     .get(`https://vehicle-requisition-server.onrender.com/api/users/logout`)
     //     .then((res) => {
     //       console.log(res);
     //       //this.$store.commit('change', '');
@@ -203,7 +209,8 @@ export default {
       let photo =
         this.user_photo.length > 200
           ? this.user_photo
-          : "http://localhost:5000/" + this.user_photo;
+          : "https://vehicle-requisition-server.onrender.com/" +
+            this.user_photo;
       return photo;
     },
     removePhoto() {
