@@ -13,7 +13,12 @@ app.use(express.static("img/"));
 app.use(express.static("img/teachers/"));
 app.use(express.static("img/transport-officials/"));
 app.use(express.static("img/drivers/"));
-app.use(cors({ origin: ["http://localhost:8080"], credentials: true }));
+app.use(
+  cors({
+    origin: ["https://vehicle-requisition-server.onrender.com"],
+    credentials: true,
+  })
+);
 app.use(express.json());
 app.use(cookieParser());
 
